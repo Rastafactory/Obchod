@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 
 /* GET home page. */
-router.get('/', ensureAuthenticated, function(req, res, next) {
+router.get('/', function(req, res, next) {
     var a = new Date();
     var date = a.toString().substr(4, 11);
     
@@ -15,7 +15,7 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
     });
         console.log(users);
     
-  res.render('index', {
+  res.render('index2', {
       date: date,
       users: users
   });
@@ -24,6 +24,11 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 
 router.get('/about', function(req, res, next) {
   res.render('about');
+});
+
+router.get('/product_detail', function(req, res, next) {
+  res.render('product_detail', {
+  });
 });
 
 function ensureAuthenticated(req, res, next){
