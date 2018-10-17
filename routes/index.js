@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     });
         console.log(users);
     
-  res.render('index2', {
+  res.render('index', {
       date: date,
       users: users
   });
@@ -28,6 +28,26 @@ router.get('/about', function(req, res, next) {
 
 router.get('/product_detail', function(req, res, next) {
   res.render('product_detail', {
+  });
+});
+
+router.get('/contact', function(req, res, next) {
+  res.render('contact', {
+  });
+});
+
+router.get('/checkout', function(req, res, next) {
+  res.render('checkout', {
+  });
+});
+
+router.get('/cart', function(req, res, next) {
+  res.render('cart', {
+  });
+});
+
+router.get('/about', function(req, res, next) {
+  res.render('about', {
   });
 });
 

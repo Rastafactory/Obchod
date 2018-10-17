@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/ekovital-style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <script>
+    $(document).ready(function(){
+        $(".days2 li span").click(function(){
+        $a = $( "#myselect" ).val();
+
+        if($a == "Odznacit") {
+        this.className="odznacit";
+        }else if($a == "Dovolenka") {
+            this.className="dovolenka";
+        }else if($a == "Praceneschopnost") {
+            this.className="praceneschopnost";
+        }else if($a == "Schvalit") {
+            this.className="schvalit";
+        }
+            alert($a);
+        });
+    });
+
+    </script>
+    
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+                <a class="navbar-brand" href="/">Logo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/about">O firme</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <% if (user){{%>
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=user.username%></a></li>
+                    <li><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> Odhlásiť sa</a></li>      
+                    <% }} %>
+                    <% if (!user){{%>
+                    <li><a href="/users/register"><span class="glyphicon glyphicon-log-in"></span> Registrovať sa</a>
+                    <% }} %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<h1>Prehľad dochádzok</h1>
+
+<div class="month">      
+  <ul>
+    <li class="prev"><select id="myselect">
+    <option value="Odznacit">Odznacit</option>
+    <option value="Dovolenka">Dovolenka</option>
+    <option value="Praceneschopnost">Praceneschopnost</option>
+    <option value="Schvalit">Schvalit</option>
+    </select></li>
+    <li>
+     <label>Dnes je:<br> <%=date%><br></label>
+    </li>
+  </ul>
+</div>   
+    
+<ul class="days">
+  <li id="employee_name"></li>
+        <% for (var a=1; a<32;a++){%>
+            <li><%=a%></li>
+        <% } %>
+</ul>
+
+    <% for (var i=0; i<users.length;i++){%>
+        <ul class="days2">
+        <li id="employee_name"><b> <%=users[i].firstname%> <%=users[i].lastname%></b></li>
+        <% for (var a=0; a<31;a++){%>
+            <li><span class="odznacit">A</span></li>
+        <% } %>
+</ul>
+    <% } %>
+<ul class="days">
+</ul>
+    <img src="/images/legenda.png" alt="Image">
+
+    <footer class="container-fluid text-center">
+        <p>Dochádzkový systém vytvorený spoločnosťou Strike</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
-mongoose.connect('mongodb://rasta:ekovital@ds235877.mlab.com:35877/projekt');
+mongoose.connect('mongodb://admin:Admin567@ds125723.mlab.com:25723/shopin', { useMongoClient: true });
 
 var db = mongoose.connection;
 
@@ -11,19 +11,10 @@ var UserSchema = mongoose.Schema({
         type: String,
         index: true
     },
-    firstname: {
-        type: String
-    },
-    lastname: {
-        type: String
-    },
     password: {
         type: String
     },
     email: {
-        type: String
-    },
-    profileimage: {
         type: String
     }
 });
