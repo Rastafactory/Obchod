@@ -7,20 +7,21 @@
 		<meta name="description" content="">
 		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
 		<!-- bootstrap -->
-		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">      
-		<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">		
-		<link href="../themes/css/bootstrappage.css" rel="stylesheet"/>
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
+		<link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">		
+		<link href="/themes/css/bootstrappage.css" rel="stylesheet"/>
+        <link rel='stylesheet' href='/stylesheets/table.css' />
 		
 		<!-- global styles -->
-		<link href="../themes/css/main.css" rel="stylesheet"/>
-		<link href="../themes/css/jquery.fancybox.css" rel="stylesheet"/>
+		<link href="/themes/css/main.css" rel="stylesheet"/>
+		<link href="/themes/css/jquery.fancybox.css" rel="stylesheet"/>
 				
 		<!-- scripts -->
-		<script src="../themes/js/jquery-1.7.2.min.js"></script>
-		<script src="../bootstrap/js/bootstrap.min.js"></script>				
-		<script src="../themes/js/superfish.js"></script>	
-		<script src="../themes/js/jquery.scrolltotop.js"></script>
-		<script src="../themes/js/jquery.fancybox.js"></script>
+		<script src="/themes/js/jquery-1.7.2.min.js"></script>
+		<script src="/bootstrap/js/bootstrap.min.js"></script>				
+		<script src="/themes/js/superfish.js"></script>	
+		<script src="/themes/js/jquery.scrolltotop.js"></script>
+		<script src="/themes/js/jquery.fancybox.js"></script>
 		<!--[if lt IE 9]>			
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 			<script src="js/respond.min.js"></script>
@@ -49,7 +50,7 @@
 		<div id="wrapper" class="container">
 			<section class="navbar main-menu">
 				<div class="navbar-inner main-menu">				
-					<a href="index" class="logo pull-left"><img src="../themes/images/logo.png" class="site_logo" alt=""></a>
+					<a href="/" class="logo pull-left"><img src="/themes/images/logo.png" class="site_logo" alt=""></a>
 					<nav id="menu" class="pull-right">
 						<ul>
 							<li><a href="./products.html">Woman</a>					
@@ -75,7 +76,7 @@
 				</div>
 			</section>
 			<section class="header_text sub">
-			<img class="pageBanner" src="../themes/images/pageBanner.png" alt="New products" >
+			<img class="pageBanner" src="/themes/images/pageBanner.png" alt="New products" >
 				<h4><span>Add or Delete Product</span></h4>
 			</section>
 			<section class="main-content">				
@@ -111,7 +112,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label> Description</label>
-                                                <input id="description" class="form-control" name="description" type="textarea" />
+                                                <textarea id="description" class="form-control" name="description" rows="10" cols="30"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label> Price</label>
@@ -119,7 +120,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label> Image</label>
-                                                <input id="img" class="form-control" name="img" type="file" />
+                                                <input id="img" class="form-control" name="img" type="file" multiple/>
                                             </div>
                                         <hr>
                                         <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Add new Product"></div>
@@ -127,12 +128,15 @@
                                 </form>
 							</div>
                             <div class="span6">
-                                <table>
-                                   <tr>
-                                      <th>Product Name</th><th>Product Code</th><th>Price</th><th>Availability</th><th>Brand</th><th>category</th><th>subcategory</th>
-                                   </tr>
-                                    
-                                   <% for (var i=0; i<products.length;i++) { %>
+					<table>
+						<thead>
+							<tr class="table100-head">
+								<th>Product Name</th><th>Product Code</th><th>Price</th><th>Availability</th><th>Brand</th><th>Category</th><th>Subcategory</th><th></th>
+							</tr>
+						</thead>
+						<tbody>
+								<% for (var i=0; i<products.length;i++) { %>
+                                    <form method="post" enctype="multipart/form-data" action="/products/deleteProduct/<%=products[i].id%>">
                                     <tr>
                                         <td><%=products[i].productname%></td>
                                         <td><%=products[i].productcode%></td>
@@ -141,10 +145,13 @@
                                         <td><%=products[i].brand%></td>
                                         <td><%=products[i].category%></td>
                                         <td><%=products[i].subcategory%></td>
-                                    </tr>    
-                                   <% } %>
-                                </table>
-							</div>						
+                                        <td><div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Delete"></div></td>
+                                    </tr>
+                                    </form>
+                                   <% } %>y
+						</tbody>
+					</table>
+                                </div>						
 						</div>
 					</div>
 				</div>

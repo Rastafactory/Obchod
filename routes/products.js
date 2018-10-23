@@ -17,11 +17,23 @@ var storage = multer.diskStorage({
  
 var upload = multer({
  storage: storage
-});
+}).array('img',2);;
 
 router.get('/', function(req, res, next) {
     res.render('products',  {
     });
+});
+
+router.get('/product_detail/:id', function(req, res, next) {
+    var pruductID = req.params.id;
+    Product.getProductById(pruductID, function(err, product) {
+        if(err){
+            res.render('addProduct', {errors: err});
+        }else{
+            res.render('product_detail', {product: product });
+        }     
+    }
+    )  
 });
 
 router.get('/addProduct', function(req, res, next) {
@@ -39,7 +51,7 @@ router.get('/addProduct', function(req, res, next) {
     });
 });
 
-router.post('/addProduct', upload.any('img'), function(req, res, next) {
+router.post('/addProduct', upload, function(req, res, next) {
     var productname = req.body.productname;
     var productcode = req.body.productcode;
     var availability = req.body.availability;
@@ -48,34 +60,21 @@ router.post('/addProduct', upload.any('img'), function(req, res, next) {
     var subcategory = req.body.subcategory;
     var description = req.body.description;
     var price = req.body.price;
+    var imageName = [];
     
     if(req.files){
         console.log('Uploading File...');
-        var path = req.files[0].path;
-        var imageName = req.files[0].originalname;
+        
+        for(var i=0; i<req.files.length;i++){
+        var originalname = req.files[i].originalname;
+        imageName.push(originalname);
+        }
+        
     }else{
         console.log('No File Uploaded...');
-        var path = 'uploads\\noimage.jpg';
         var imageName = 'noimage.jpg';
     }
     
-    // Form Validator
-    //req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    
-    //Check Errors
-    var errors = req.validationErrors();
-    
-
-    var imagepath = {};
-    imagepath['path'] = path;
-    imagepath['originalname'] = imageName;
-    
-    if(errors){
-        console.log(errors);
-        res.render('addProduct',{
-            errors: errors            
-        });
-    }else{
         var newProduct = new Product({
             productname: productname,
             productcode: productcode,
@@ -85,7 +84,7 @@ router.post('/addProduct', upload.any('img'), function(req, res, next) {
             subcategory: subcategory,
             description: description,
             price: price,
-            img: imagepath
+            img: imageName
         });
         
         Product.createProduct(newProduct, function(err, product){
@@ -97,7 +96,18 @@ router.post('/addProduct', upload.any('img'), function(req, res, next) {
         
         res.location('/products/addProduct');
         res.redirect('/products/addProduct');
-    }
 });
+
+router.post('/deleteProduct/:id', function(req, res, next) {
+    var id = req.params.id;
+    console.log('Product deleted' + id);
+    Product.removeProduct(id, function(err, callback){
+        if(err) throw err;
+        console.log(callback);
+    });
+    
+    res.location('/products/addProduct');
+    res.redirect('/products/addProduct');
+    });
 
 module.exports = router;

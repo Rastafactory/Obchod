@@ -1,34 +1,29 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Product = require('../models/product');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var a = new Date();
     var date = a.toString().substr(4, 11);
     
-    User.find({}, { email: 1, username: 1, firstname:1, lastname:1 }, function(err, users) {
-    var userMap = {};
+    Product.find({}, function(err, products) {
+        var productMap = {};
 
-    users.forEach(function(user) {
-      userMap[user._id] = user;
-    });
-        console.log(users);
+        products.forEach(function(product) {
+          productMap[product._id] = product;
+        });
+        console.log(products);
     
-  res.render('index', {
-      date: date,
-      users: users
-  });
+        res.render('index', {
+            products: products
+        });
+    })
 });
-    });
 
 router.get('/about', function(req, res, next) {
   res.render('about');
-});
-
-router.get('/product_detail', function(req, res, next) {
-  res.render('product_detail', {
-  });
 });
 
 router.get('/contact', function(req, res, next) {

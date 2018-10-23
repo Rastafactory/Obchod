@@ -55,19 +55,11 @@ passport.use(new LocalStrategy(function(username, password, done){
     });
 }));
 
-router.post('/register', upload.single('profileimage'), function(req, res, next) {
+router.post('/register', function(req, res, next) {
     var username = req.body.username;
     var email = req.body.email;
     var password = req.body.password;
     var password2 = req.body.password2;
-    
-    /*if(req.file){
-        console.log('Uploading File...');
-        var profileimage = req.file.filename;
-    }else{
-        console.log('No File Uploaded...');
-        var profileimage = 'noimage.jpg';
-    }*/
     
     // Form Validator
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
@@ -84,8 +76,7 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
         var newUser = new User({
             email: email,
             username: username,
-            password: password,
-            //profileimage: profileimage
+            password: password
         });
         
         User.createUser(newUser, function(err, user){

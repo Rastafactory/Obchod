@@ -38,18 +38,7 @@ var ProductSchema = mongoose.Schema({
     price: {
         type: String
     },
-    img: { 
-        //data: Buffer, contentType: String 
-        path: {
-                 type: String,
-                 required: true,
-                 trim: true
-                 },
-                 originalname: {
-                 type: String,
-                 required: true
-                 }
-    }
+    img: Array
 });
 
 var Product = module.exports = mongoose.model('Product', ProductSchema);
@@ -71,6 +60,13 @@ module.exports.createProduct = function(newProduct, callback){
 module.exports.getAllProducts = function(callback, limit) {
  Product.find(callback).limit(limit);
 }
+
+module.exports.removeProduct = function(productId, callback){
+    var query = {_id: productId};
+    Product.remove(query, callback);
+}
+
+
 
 /*module.exports.getProductByQuerry = function(productname, callback){
     var query = {productname: productname};
