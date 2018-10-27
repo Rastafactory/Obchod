@@ -2,28 +2,29 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Product = require('../models/product');
+var Security = require('../lib/Security');
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-    var a = new Date();
-    var date = a.toString().substr(4, 11);
-    
-    Product.find({}, function(err, products) {
-        var productMap = {};
-
-        products.forEach(function(product) {
-          productMap[product._id] = product;
+    if(!req.session.cart) {
+      req.session.cart = {
+          items: [],
+          totals: 0.00,
+          formattedTotals: ''
+      };
+    }  
+    Product.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
+        let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
+        products.forEach( (product) => {
+            product.formattedPrice = format.format(product.price);
         });
-        console.log(products);
-    
-        res.render('index', {
-            products: products
-        });
-    })
-});
+    res.render('index', {
+        products: products,
+        nonce: Security.md5(req.sessionID + req.headers['user-agent'])
+    });
 
-router.get('/about', function(req, res, next) {
-  res.render('about');
+  }).catch(err => {
+      res.status(400).send('Bad request');
+  });
 });
 
 router.get('/contact', function(req, res, next) {
@@ -31,18 +32,8 @@ router.get('/contact', function(req, res, next) {
   });
 });
 
-router.get('/checkout', function(req, res, next) {
-  res.render('checkout', {
-  });
-});
-
-router.get('/cart', function(req, res, next) {
-  res.render('cart', {
-  });
-});
-
-router.get('/about', function(req, res, next) {
-  res.render('about', {
+router.get('/blog', function(req, res, next) {
+  res.render('blog', {
   });
 });
 

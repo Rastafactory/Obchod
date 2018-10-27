@@ -6,12 +6,23 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 var expressValidator = require('express-validator');
+var MongoDBStore = require('connect-mongodb-session')(session);
 var multer = require('multer');
 var upload = multer({dest: './uploads'});
 var flash = require('connect-flash');
 var debug = require('debug')('projekt:server');
 var http = require('http');
 var app = express();
+var config = require('./config.js');
+const Security = require('./lib/Security');
+
+var store = new MongoDBStore({
+    uri: config.db.url,
+    collection: config.db.sessions
+});
+
+app.locals.paypal = config.paypal;
+app.locals.locale = config.locale;
 
 // Get port from environment and store in Express.
 
@@ -27,6 +38,8 @@ console.log('App is running on port: ' + port);
 var index = require('./routes/index');
 var users = require('./routes/users');
 var products = require('./routes/products');
+var checkout = require('./routes/checkout');
+var cart = require('./routes/cart');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,9 +53,15 @@ app.use(express.static('public'));
 
 // Handle Sessions
 app.use(session({
-    secret:'sectret',
+    secret: config.secret,
+    resave: false,
     saveUninitialized: true,
-    resave: true
+    unset: 'destroy',
+    store: store,
+    name: config.name + '-' + Security.generateId(),
+    genid: (req) => {
+        return Security.generateId()
+    }
 }));
 
 // Passport
@@ -81,6 +100,8 @@ app.get('*', function(req, res, next){
 app.use('/', index);
 app.use('/users', users);
 app.use('/products', products);
+app.use('/checkout', checkout);
+app.use('/cart', cart);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

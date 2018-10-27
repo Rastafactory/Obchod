@@ -17,13 +17,13 @@ var ProductSchema = mongoose.Schema({
         type: String,
         index: true
     },
-    productcode: {
-        type: String
+    product_id: {
+        type: Number
     },
     availability: {
         type: String
     },
-    brand: {
+    manufacturer: {
         type: String
     },
     category: {

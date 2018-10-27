@@ -1,297 +1,165 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Bootstrap E-commerce Templates</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
-		<!-- bootstrap -->
-		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
-		<link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-		<link href="/themes/css/bootstrappage.css" rel="stylesheet"/>
-		
-		<!-- global styles -->
-		<link href="/themes/css/flexslider.css" rel="stylesheet"/>
-		<link href="/themes/css/main.css" rel="stylesheet"/>
+<% include header%>
+    <!-- ##### Welcome Area Start ##### -->
+    <section class="welcome_area bg-img background-overlay" style="background-image: url(/products/img/bg-img/bg-1.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="hero-content">
+                        <h6>asoss</h6>
+                        <h2>New Collection</h2>
+                        <a href="#" class="btn essence-btn">view collection</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Welcome Area End ##### -->
 
-		<!-- scripts -->
-		<script src="/themes/js/jquery-1.7.2.min.js"></script>
-		<script src="/bootstrap/js/bootstrap.min.js"></script>				
-		<script src="/themes/js/superfish.js"></script>	
-		<script src="/themes/js/jquery.scrolltotop.js"></script>
-		<!--[if lt IE 9]>			
-			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<script src="js/respond.min.js"></script>
-		<![endif]-->
-        
-	</head>
-    <body>		
-		<div id="top-bar" class="container">
-			<div class="row">
-				<div class="span4">
-					<form method="POST" class="search_form">
-						<input type="text" class="input-block-level search-query" Placeholder="eg. T-sirt">
-					</form>
-				</div>
-				<div class="span8">
-					<div class="account pull-right">
-						<ul class="user-menu">
-                            <li><a href="/products/addProduct">Add Product</a></li>
-							<li><a href="cart">Your Cart</a></li>
-							<li><a href="checkout">Checkout</a></li>
-                                <% if (user){{%>
-                                <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=user.username%></a></li>
-                                <li><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>      
-                                <% }} %>
-                                <% if (!user){{%>
-                                <li><a href="/users/register"><span class="glyphicon glyphicon-log-in"></span>Login</a>
-                                <% }} %>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="wrapper" class="container">
-			<section class="navbar main-menu">
-				<div class="navbar-inner main-menu">				
-					<a href="index" class="logo pull-left"><img src="themes/images/logo.png" class="site_logo" alt=""></a>
-					<nav id="menu" class="pull-right">
-						<ul>
-							<li><a href="./products">Woman</a>					
-								<ul>
-									<li><a href="./products">Lacinia nibh</a></li>									
-									<li><a href="./products">Eget molestie</a></li>
-									<li><a href="./products">Varius purus</a></li>									
-								</ul>
-							</li>															
-							<li><a href="./products">Man</a></li>			
-							<li><a href="./products">Sport</a>
-								<ul>									
-									<li><a href="./products">Gifts and Tech</a></li>
-									<li><a href="./products">Ties and Hats</a></li>
-									<li><a href="./products">Cold Weather</a></li>
-								</ul>
-							</li>							
-							<li><a href="./products">Hangbag</a></li>
-							<li><a href="./products">Best Seller</a></li>
-							<li><a href="./products">Top Seller</a></li>
-						</ul>
-					</nav>
-				</div>
-			</section>
-			<section  class="homepage-slider" id="home-slider">
-				<div class="flexslider">
-					<ul class="slides">
-						<li>
-							<img src="themes/images/carousel/banner-1.jpg" alt="" />
-						</li>
-						<li>
-							<img src="themes/images/carousel/banner-2.jpg" alt="" />
-							<div class="intro">
-								<h1>Mid season sale</h1>
-								<p><span>Up to 50% Off</span></p>
-								<p><span>On selected items online and in stores</span></p>
-							</div>
-						</li>
-					</ul>
-				</div>			
-			</section>
-			<section class="header_text">
-				We stand for top quality templates. Our genuine developers always optimized bootstrap commercial templates. 
-				<br/>Don't miss to use our cheap abd best bootstrap templates.
-			</section>
-			<section class="main-content">
-				<div class="row">
-					<div class="span12">													
-						<div class="row">
-							<div class="span12">
-								<h4 class="title">
-									<span class="pull-left"><span class="text"><span class="line">Feature <strong>Products</strong></span></span></span>
-									<span class="pull-right">
-										<a class="left button" href="#myCarousel" data-slide="prev"></a><a class="right button" href="#myCarousel" data-slide="next"></a>
-									</span>
-								</h4>
-								<div id="myCarousel" class="myCarousel carousel slide">
-									<div class="carousel-inner">
-										<div class="active item">
-											<ul class="thumbnails">	
-                                                    <% for (var i=0; i<products.length;i++) { %>
-                                                    <li class="span3">
-													<div class="product-box">
-                                                        <p><a href="/products/product_detail/<%=products[i]._id%>"><img src="uploads/<%=products[i].img[0]%>" alt="" /></a></p>
-														<a href="/products/product_detail/<%=products[i]._id%>" class="title"><%=products[i].productname%></a><br/>
-														<a href="/products/product_detail/<%=products[i]._id%>" class="category"><%=products[i].category%></a>
-														<p class="price"><%=products[i].price%></p>
-													</div>
-                                                    </li>
-                                                    <% } %>
-											</ul>
-										</div>
-										<div class="item">
-											<ul class="thumbnails">
-												<li class="span3">
-													<div class="product-box">
-														<p><a href="product_detail"><img src="themes/images/ladies/5.jpg" alt="" /></a></p>
-														<a href="product_detail" class="title">Know exactly</a><br/>
-														<a href="products" class="category">Quis nostrud</a>
-														<p class="price">$22.30</p>
-													</div>
-												</li>	
-											</ul>
-										</div>
-									</div>							
-								</div>
-							</div>						
-						</div>
-						<br/>
-						<div class="row">
-							<div class="span12">
-								<h4 class="title">
-									<span class="pull-left"><span class="text"><span class="line">Latest <strong>Products</strong></span></span></span>
-									<span class="pull-right">
-										<a class="left button" href="#myCarousel-2" data-slide="prev"></a><a class="right button" href="#myCarousel-2" data-slide="next"></a>
-									</span>
-								</h4>
-								<div id="myCarousel-2" class="myCarousel carousel slide">
-									<div class="carousel-inner">
-										<div class="active item">
-											<ul class="thumbnails">												
-												<li class="span3">
-													<div class="product-box">
-														<span class="sale_tag"></span>
-														<p><a href="product_detail"><img src="themes/images/cloth/bootstrap-women-ware2.jpg" alt="" /></a></p>
-														<a href="product_detail" class="title">Ut wisi enim ad</a><br/>
-														<a href="products" class="category">Commodo consequat</a>
-														<p class="price">$25.50</p>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item">
-											<ul class="thumbnails">
-												<li class="span3">
-													<div class="product-box">
-														<p><a href="product_detail"><img src="themes/images/cloth/bootstrap-women-ware4.jpg" alt="" /></a></p>
-														<a href="product_detail" class="title">Know exactly</a><br/>
-														<a href="products" class="category">Quis nostrud</a>
-														<p class="price">$45.50</p>
-													</div>
-												</li>	
-											</ul>
-										</div>
-									</div>							
-								</div>
-							</div>						
-						</div>
-						<div class="row feature_box">						
-							<div class="span4">
-								<div class="service">
-									<div class="responsive">	
-										<img src="themes/images/feature_img_2.png" alt="" />
-										<h4>MODERN <strong>DESIGN</strong></h4>
-										<p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>									
-									</div>
-								</div>
-							</div>
-							<div class="span4">	
-								<div class="service">
-									<div class="customize">			
-										<img src="themes/images/feature_img_1.png" alt="" />
-										<h4>FREE <strong>SHIPPING</strong></h4>
-										<p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
-									</div>
-								</div>
-							</div>
-							<div class="span4">
-								<div class="service">
-									<div class="support">	
-										<img src="themes/images/feature_img_3.png" alt="" />
-										<h4>24/7 LIVE <strong>SUPPORT</strong></h4>
-										<p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
-									</div>
-								</div>
-							</div>	
-						</div>		
-					</div>				
-				</div>
-			</section>
-			<section class="our_client">
-				<h4 class="title"><span class="text">Manufactures</span></h4>
-				<div class="row">					
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/14.png"></a>
-					</div>
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/35.png"></a>
-					</div>
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/1.png"></a>
-					</div>
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/2.png"></a>
-					</div>
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/3.png"></a>
-					</div>
-					<div class="span2">
-						<a href="#"><img alt="" src="themes/images/clients/4.png"></a>
-					</div>
-				</div>
-			</section>
-			<section id="footer-bar">
-				<div class="row">
-					<div class="span3">
-						<h4>Navigation</h4>
-						<ul class="nav">
-							<li><a href="./index">Homepage</a></li>  
-							<li><a href="./about">About Us</a></li>
-							<li><a href="./contact">Contact Us</a></li>
-							<li><a href="./cart">Your Cart</a></li>
-							<li><a href="/users/register">Login</a></li>							
-						</ul>					
-					</div>
-					<div class="span4">
-						<h4>My Account</h4>
-						<ul class="nav">
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Order History</a></li>
-							<li><a href="#">Wish List</a></li>
-							<li><a href="#">Newsletter</a></li>
-						</ul>
-					</div>
-					<div class="span5">
-						<p class="logo"><img src="themes/images/logo.png" class="site_logo" alt=""></p>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. the  Lorem Ipsum has been the industry's standard dummy text ever since the you.</p>
-						<br/>
-						<span class="social_icons">
-							<a class="facebook" href="#">Facebook</a>
-							<a class="twitter" href="#">Twitter</a>
-							<a class="skype" href="#">Skype</a>
-							<a class="vimeo" href="#">Vimeo</a>
-						</span>
-					</div>					
-				</div>	
-			</section>
-			<section id="copyright">
-				<span>Copyright 2013 bootstrappage template  All right reserved.</span>
-			</section>
-		</div>
-		<script src="themes/js/common.js"></script>
-		<script src="themes/js/jquery.flexslider-min.js"></script>
-		<script type="text/javascript">
-			$(function() {
-				$(document).ready(function() {
-					$('.flexslider').flexslider({
-						animation: "fade",
-						slideshowSpeed: 4000,
-						animationSpeed: 600,
-						controlNav: false,
-						directionNav: true,
-						controlsContainer: ".flex-container" // the container that holds the flexslider
-					});
-				});
-			});
-		</script>
-    </body>
-</html>
+    <!-- ##### Top Catagory Area Start ##### -->
+    <div class="top_catagory_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Single Catagory -->
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url(/products/img/bg-img/bg-2.jpg);">
+                        <div class="catagory-content">
+                            <a href="#">Clothing</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Catagory -->
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url(/products/img/bg-img/bg-3.jpg);">
+                        <div class="catagory-content">
+                            <a href="#">Shoes</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Catagory -->
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url(/products/img/bg-img/bg-4.jpg);">
+                        <div class="catagory-content">
+                            <a href="#">Accessories</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Top Catagory Area End ##### -->
+
+    <!-- ##### CTA Area Start ##### -->
+    <div class="cta-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="cta-content bg-img background-overlay" style="background-image: url(/products/img/bg-img/bg-5.jpg);">
+                        <div class="h-100 d-flex align-items-center justify-content-end">
+                            <div class="cta--text">
+                                <h6>-60%</h6>
+                                <h2>Global Sale</h2>
+                                <a href="#" class="btn essence-btn">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### CTA Area End ##### -->
+
+    <!-- ##### New Arrivals Area Start ##### -->
+    <section class="new_arrivals_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading text-center">
+                        <h2>Popular Products</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="popular-products-slides owl-carousel">
+
+                        <!-- Single Product -->
+                        <% var i = 0; products.forEach(function(product) { i++; %>
+                        <div class="single-product-wrapper">
+                            <!-- Product Image -->
+                            <div class="product-img">
+                                <p><a href="/products/product_detail/<%=product._id%>"><img src="/uploads/<%=product.img[0]%>" alt=""></a>
+                                <!-- Hover Thumb -->
+                                    <a href="/products/product_detail/<%=product._id%>"><img class="hover-img" src="/uploads/<%=product.img[1]%>" alt=""></a>
+                                <!-- Favourite -->
+                                <div class="product-favourite">
+                                    <a href="#" class="favme fa fa-heart"></a>
+                                </div>
+                            </div>
+                            <!-- Product Description -->
+                            <div class="product-description">
+                                <span>topshop</span>
+                                <a href="single-product-details.html">
+                                    <h6><%=product.productname%></h6>
+                                </a>
+                                <p class="product-price"><%= product.formattedPrice %></p>
+
+                                <!-- Hover Content -->
+                                <div class="hover-content">
+                                    <!-- Add to Cart -->
+                                    <form action="/cart" method="post">
+                                    
+                                    <input type="hidden" name="product_id" value="<%= product.product_id %>">
+                                    <input type="hidden" name="nonce" value="<%= nonce %>">
+                                    <div class="add-to-cart-btn">
+                                        <button type="submit" class="btn essence-btn">Add To Cart</button>
+                                    </div>
+                                    <span class="qty-wrap">
+                                        <input type="hidden" name="qty" class="qty" value="1" readonly>
+                                    </span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### New Arrivals Area End ##### -->
+
+    <!-- ##### Brands Area Start ##### -->
+    <div class="brands-area d-flex align-items-center justify-content-between">
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand1.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand2.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand3.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand4.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand5.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand6.png" alt="">
+        </div>
+    </div>
+    <!-- ##### Brands Area End ##### -->
+
+<% include footer%>
