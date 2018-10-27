@@ -16,10 +16,6 @@ router.get('/register', function(req, res, next) {
   res.render('register');
 });
 
-router.get('/login', function(req, res, next) {
-  res.render('login');
-});
-
 router.post('/login',
   passport.authenticate('local', {failureRedirect:'/users/register', failureFlash:'Invalid Username or Password'}),
   function(req, res) {
@@ -60,6 +56,8 @@ router.post('/register', function(req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
     var password2 = req.body.password2;
+    console.log("password" + req.body.password);
+    console.log("password" + req.body.password2);
     
     // Form Validator
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);

@@ -5,6 +5,7 @@ var upload = multer({dest: './public/uploads'});
 var LocalStrategy = require('passport-local');
 
 var Product = require('../models/product');
+var Security = require('../lib/Security');
 
 var storage = multer.diskStorage({
  destination: function(req, file, cb) {
@@ -26,11 +27,19 @@ router.get('/', function(req, res, next) {
 
 router.get('/product_detail/:id', function(req, res, next) {
     var pruductID = req.params.id;
+    
+    
     Product.getProductById(pruductID, function(err, product) {
         if(err){
             res.render('addProduct', {errors: err});
         }else{
-            res.render('product_detail', {product: product });
+            let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
+            product.formattedPrice = format.format(product.price);
+            res.render('product_detail', 
+            {
+                product: product,
+                nonce: Security.md5(req.sessionID + req.headers['user-agent'])
+            });
         }     
     }
     )  
@@ -53,9 +62,9 @@ router.get('/addProduct', function(req, res, next) {
 
 router.post('/addProduct', upload, function(req, res, next) {
     var productname = req.body.productname;
-    var productcode = req.body.productcode;
+    var product_id = req.body.product_id;
     var availability = req.body.availability;
-    var brand = req.body.brand;
+    var manufacturer = req.body.manufacturer;
     var category = req.body.category;
     var subcategory = req.body.subcategory;
     var description = req.body.description;
@@ -77,9 +86,9 @@ router.post('/addProduct', upload, function(req, res, next) {
     
         var newProduct = new Product({
             productname: productname,
-            productcode: productcode,
+            product_id: product_id,
             availability: availability,
-            brand: brand,
+            manufacturer: manufacturer,
             category: category,
             subcategory: subcategory,
             description: description,
