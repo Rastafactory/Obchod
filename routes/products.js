@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
-var upload = multer({dest: './public/uploads'});
 var LocalStrategy = require('passport-local');
 
 var Product = require('../models/product');
@@ -18,11 +17,22 @@ var storage = multer.diskStorage({
  
 var upload = multer({
  storage: storage
-}).array('img',2);;
+}).array('img',5);;
 
 router.get('/', function(req, res, next) {
-    res.render('products',  {
+    Product.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
+        let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
+        products.forEach( (product) => {
+            product.formattedPrice = format.format(product.price);
+        });
+    res.render('products', {
+        products: products,
+        nonce: Security.md5(req.sessionID + req.headers['user-agent'])
     });
+
+  }).catch(err => {
+      res.status(400).send('Bad request');
+  });
 });
 
 router.get('/product_detail/:id', function(req, res, next) {
@@ -45,7 +55,7 @@ router.get('/product_detail/:id', function(req, res, next) {
     )  
 });
 
-router.get('/addProduct', function(req, res, next) {
+router.get('/addProduct', Security.ensureAuthenticated, function(req, res, next) {
     Product.find({}, {}, function(err, products) {
     var productMap = {};
 
@@ -60,9 +70,8 @@ router.get('/addProduct', function(req, res, next) {
     });
 });
 
-router.post('/addProduct', upload, function(req, res, next) {
+router.post('/addProduct', Security.ensureAuthenticated, upload, function(req, res, next) {
     var productname = req.body.productname;
-    var product_id = req.body.product_id;
     var availability = req.body.availability;
     var manufacturer = req.body.manufacturer;
     var category = req.body.category;
@@ -83,6 +92,8 @@ router.post('/addProduct', upload, function(req, res, next) {
         console.log('No File Uploaded...');
         var imageName = 'noimage.jpg';
     }
+    
+    var product_id = Math.floor(Math.random()*900000) + 100000;
     
         var newProduct = new Product({
             productname: productname,
@@ -107,7 +118,7 @@ router.post('/addProduct', upload, function(req, res, next) {
         res.redirect('/products/addProduct');
 });
 
-router.post('/deleteProduct/:id', function(req, res, next) {
+router.post('/deleteProduct/:id', Security.ensureAuthenticated, function(req, res, next) {
     var id = req.params.id;
     console.log('Product deleted' + id);
     Product.removeProduct(id, function(err, callback){

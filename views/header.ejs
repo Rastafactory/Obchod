@@ -73,26 +73,20 @@
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
+                            <li><a href="/about">About</a>
+                                <!-- <ul class="dropdown">
                                     <li><a href="/">Home</a></li>
-                                    <li><a href="/products">Shop</a></li>
-                                    <li><a href="/checkout">Checkout</a></li>
-                                    <li><a href="/blog">Blog</a></li>
-                                    <li><a href="/single-blog">Single Blog</a></li>
-                                    <li><a href="/regular-page">Regular Page</a></li>
-                                    <li><a href="/contact">Contact</a></li>
-                                </ul>
+                                </ul>-->
                             </li>
                             <li><a href="/blog">Blog</a></li>
                             <li><a href="/contact">Contact</a></li>
-                            <!--<% if (user){{%>
+                            <% if (user){{%>
+                            <li><a href="/products/addProduct">Add Product</a></li>
                             <li><a href="/contact"><span class="glyphicon glyphicon-user"></span><%=user.username%></a></li>
                             <li><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>      <% }} %>
                             <% if (!user){{%>
                             <li><a href="/users/register"><span class="glyphicon glyphicon-log-in"></span> Login</a>
-                            <% }} %>-->
-                            <li><a href="/products/addProduct">Add Product</a></li>
+                            <% }} %>
                         </ul>
                     </div>
                     <!-- Nav End -->

@@ -8,10 +8,10 @@
                     <div class="checkout_details_area mt-50 clearfix">
 
                         <div class="cart-page-heading mb-30">
-                            <h5>Billing Address</h5>
+                            <h4>Log In</h4>
                         </div>
 
-                        <%- messages() %>
+                        <!-- <%- messages() %> -->
 						<form method="post" action="/users/login" autocomplete="on">
 							<input type="hidden" name="next" value="/">
 							<fieldset>
@@ -24,7 +24,7 @@
                                     <input id="password" class="form-control" name="password" required="required" type="password" placeholder="eg. X8df!90EO" />
                                 </div>
 								<div class="control-group">
-									<input tabindex="3" class="btn essence-btn" type="submit" value="Sign into your account">
+                                    <button tabindex="3" class="btn essence-btn" type="submit">Sign into your account</button>
 									<hr>
 									<p class="reset">Recover your <a tabindex="4" href="#" title="Recover your username or password">username or password</a></p>
 								</div>
@@ -37,7 +37,7 @@
                     <div class="order-details-confirmation">
 
                         <div class="cart-page-heading">
-                            <h5>Register Form</h5>
+                            <h4>Sign Up</h4>
                         </div>
                         
                         <% if (typeof errors !== 'undefined'){errors.forEach(function(error){%>
@@ -45,7 +45,7 @@
                                 <%= error.msg %>
                             </div>        
                             <% })} %>
-						<form method="post" enctype="multipart/form-data" action="/users/register">
+						<form method="post" action="/users/register">
 							<fieldset>
 								<div class="form-group">
                                         <label> Your Username</label>
@@ -64,7 +64,7 @@
                                         <input id="password2" class="form-control" name="password2" required="required" type="password" placeholder="eg. X8df!90EO" />
                                     </div>
 								<hr>
-								<input tabindex="9" class="btn essence-btn" type="submit" value="Create your account">
+                                <button class="btn essence-btn" type="submit">Create your account</button>
 							</fieldset>
 						</form>
                     </div>

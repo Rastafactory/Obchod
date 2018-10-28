@@ -11,8 +11,9 @@ router.get('/', function(req, res, next) {
           totals: 0.00,
           formattedTotals: ''
       };
-    }  
-    Product.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
+    }
+    
+    Product.find({}).then(products => {
         let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
         products.forEach( (product) => {
             product.formattedPrice = format.format(product.price);
@@ -37,11 +38,14 @@ router.get('/blog', function(req, res, next) {
   });
 });
 
-function ensureAuthenticated(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect('/users/login');
-}
+router.get('/single-blog', function(req, res, next) {
+  res.render('single-blog', {
+  });
+});
+
+router.get('/about', function(req, res, next) {
+  res.render('about', {
+  });
+});
 
 module.exports = router;
