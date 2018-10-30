@@ -94,6 +94,7 @@ app.use(function (req, res, next) {
 
 app.get('*', function(req, res, next){
     res.locals.user = req.user || null;
+    res.locals.cart = req.session.cart || null;
     next();
 });
 

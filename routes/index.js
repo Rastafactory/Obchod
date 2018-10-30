@@ -20,6 +20,7 @@ router.get('/', function(req, res, next) {
         });
     res.render('index', {
         products: products,
+        cart: req.session.cart,
         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
     });
 
@@ -29,22 +30,22 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/contact', function(req, res, next) {
-  res.render('contact', {
+  res.render('contact', {cart: req.session.cart
   });
 });
 
 router.get('/blog', function(req, res, next) {
-  res.render('blog', {
+  res.render('blog', {cart: req.session.cart
   });
 });
 
 router.get('/single-blog', function(req, res, next) {
-  res.render('single-blog', {
+  res.render('single-blog', {cart: req.session.cart
   });
 });
 
 router.get('/about', function(req, res, next) {
-  res.render('about', {
+  res.render('about', {cart: req.session.cart
   });
 });
 

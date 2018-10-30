@@ -39,8 +39,8 @@
                                         <td><%= product.productname %></td>
                                         <td><input type="text" class="qty" name="qty[]" value="<%= product.qty %>"></td>
                                         <td><a href="#" class="btn essence-btn">Update cart</a></td>
-                                        <td><%= product.price %></td>
                                         <td><%= product.formattedPrice %></td>
+                                        <td><%= product.subtotal %></td>
                                         <input type="hidden" name="product_id[]" value="<%= product.id%>">
                                     </tr>
                                 <% }); %>

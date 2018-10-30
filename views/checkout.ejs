@@ -116,7 +116,7 @@
                             <% cart.items.forEach(function(product) { %>
                             <li><span><%= product.productname %></span> <span><%= product.formattedPrice %></span></li>
                             <li><span>Quantity</span> <span><%= product.qty %></span></li>
-                            <li><span>Subtotal</span> <span>!!!</span></li>
+                            <li backgroun = "#cce5ff"><span>Subtotal</span> <span><%= product.subtotal %></span></li>
                             <% }); %>
                             <li><span>Shipping</span> <span>Free</span></li>
                             <li><span>Total</span> <span><%= cart.formattedTotals %></span></li>

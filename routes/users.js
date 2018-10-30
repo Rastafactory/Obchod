@@ -8,7 +8,7 @@ var LocalStrategy = require('passport-local');
 var User = require('../models/user');
 
 router.get('/register', function(req, res, next) {
-  res.render('register');
+  res.render('register', {cart: req.session.cart});
 });
 
 router.post('/login',

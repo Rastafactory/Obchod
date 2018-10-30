@@ -8,7 +8,6 @@ router.get('/', function(req, res) {
     let sess = req.session;
     let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
     res.render('cart', {
-        pageTitle: 'Cart',
         cart: cart,
         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
     });
@@ -19,7 +18,7 @@ router.get('/remove/:id/:nonce', (req, res) => {
    let id = req.params.id;
    if(/^\d+$/.test(id) && Security.isValidNonce(req.params.nonce, req)) {
        Cart.removeFromCart(parseInt(id, 10), req.session.cart);
-       res.redirect('/cart');
+       res.redirect('back');
    } else {
        res.redirect('/');
    }
@@ -44,7 +43,7 @@ router.post('/', function(req, res) {
         Product.findOne({product_id: product}).then(prod => {
             let cart = (req.session.cart) ? req.session.cart : null;
             Cart.addToCart(prod, qty, cart);
-            res.redirect('/cart');
+            res.redirect('back');
         }).catch(err => {
            res.redirect('/');
         });

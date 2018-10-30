@@ -26,6 +26,7 @@ router.get('/', function(req, res, next) {
             product.formattedPrice = format.format(product.price);
         });
     res.render('products', {
+        cart: req.session.cart,
         products: products,
         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
     });
@@ -47,6 +48,7 @@ router.get('/product_detail/:id', function(req, res, next) {
             product.formattedPrice = format.format(product.price);
             res.render('product_detail', 
             {
+                cart: req.session.cart,
                 product: product,
                 nonce: Security.md5(req.sessionID + req.headers['user-agent'])
             });
@@ -65,7 +67,7 @@ router.get('/addProduct', Security.ensureAuthenticated, function(req, res, next)
         console.log(products);
     
     
-      res.render('addProduct', {products: products
+      res.render('addProduct', {products: products, cart: req.session.cart
       });
     });
 });
