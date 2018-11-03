@@ -95,6 +95,7 @@ app.use(function (req, res, next) {
 app.get('*', function(req, res, next){
     res.locals.user = req.user || null;
     res.locals.cart = req.session.cart || null;
+    res.locals.nonce = Security.md5(req.sessionID + req.headers['user-agent']);
     next();
 });
 
