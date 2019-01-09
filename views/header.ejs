@@ -112,7 +112,9 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
+                    <%if (cart.items) { %>
                     <a href="#" id="essenceCartBtn"><img src="/products/img/core-img/bag.svg" alt=""> <span><%=cart.items.length%></span></a>
+                    <% } %>
                 </div>
             </div>
 
@@ -128,7 +130,7 @@
 
         <!-- Cart Button -->
         <div class="cart-button">
-            <a href="#" id="rightSideCart"><img src="/products/img/core-img/bag.svg" alt=""> <span><%=cart.items.length%></span></a>
+            <a href="#" id="rightSideCart"><img src="/products/img/core-img/bag.svg" alt=""> <span></span></a>
         </div>
 
         <div class="cart-content d-flex">
@@ -136,6 +138,7 @@
             <!-- Cart List Area -->
             <div class="cart-list">
                 <!-- Single Cart Item -->
+                <%if (cart.items) { %>
                 <% cart.items.forEach(function(product) { %>
                 
                   <div class="single-cart-item">
@@ -155,6 +158,7 @@
                       </a>
                   </div>
                 <% }); %>
+                <% } %>
             </div>
 
             <!-- Cart Summary -->

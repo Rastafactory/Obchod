@@ -4,14 +4,6 @@ mongoose.connect('mongodb://admin:Admin567@ds125723.mlab.com:25723/shopin', { us
 
 var db = mongoose.connection;
 
-/*var imageSchema = new Schema({
-img: { data: Buffer, contentType: String }
-});
-
-var productSchema = new Schema({
-img: [imageSchema];
-});*/
-
 var ProductSchema = mongoose.Schema({
     productname: {
         type: String,
