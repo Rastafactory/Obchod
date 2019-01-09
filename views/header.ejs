@@ -112,9 +112,11 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <%if (cart.items) { %>
-                    <a href="#" id="essenceCartBtn"><img src="/products/img/core-img/bag.svg" alt=""> <span><%=cart.items.length%></span></a>
-                    <% } %>
+                      <% if(!cart.items){ %>
+                        <a href="#" id="essenceCartBtn"><img src="/products/img/core-img/bag.svg" alt=""> <span>0</span></a>
+                      <% } else{ %>  
+                        <a href="#" id="essenceCartBtn"><img src="/products/img/core-img/bag.svg" alt=""> <span><%=cart.items.length%></span></a>
+                     <% } %>
                 </div>
             </div>
 

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "build": "gulp",
+    "start": "node app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -26,10 +27,11 @@
     "passport-http": "0.3.0",
     "passport-local": "1.0.0",
     "serve-favicon": "~2.4.5",
-    "path": "*"
-  },
-  "devDependencies": {
+    "path": "*",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1"
+  },
+  "devDependencies": {
+    
   }
 }

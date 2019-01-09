@@ -19,7 +19,8 @@ router.get('/', function(req, res, next) {
             product.formattedPrice = format.format(product.price);
         });
     res.render('index', {
-        products: products
+        products: products,
+        cart: req.session.cart
     });
 
   }).catch(err => {
