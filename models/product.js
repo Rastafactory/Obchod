@@ -58,8 +58,6 @@ module.exports.removeProduct = function(productId, callback){
     Product.remove(query, callback);
 }
 
-
-
 /*module.exports.getProductByQuerry = function(productname, callback){
     var query = {productname: productname};
     Product.findOne(query, callback);

@@ -19,6 +19,57 @@
     <link rel="stylesheet" href="/products/style.css">
     <link rel="stylesheet" href="/assets/style.css">
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            var n = $( ".search-area div" ).length;
+            
+            /*var thisProductNonce = $('#thisProductNonce').val();
+            var thisProductId = $('#thisProductId').val();
+
+            $( "#removeFromCart" ).click(function(){
+                $.get('cart/remove/' + thisProductId + '/' + thisProductNonce, function(data, status){});
+            
+            });*/
+
+            $("#autocomplete").keyup(function(){
+                getMatchingWords($('#autocomplete').val(), function (data){
+                $( ".search-area div" ).remove();
+                if(n<data.length){
+                    for (i=0; i<data.length; i++){
+                    //console.log(data[i].productname);
+                    $(".search-area").append("<div><p > <img src='/uploads/" + data[i].img[0] + "'> <a href='/products/product_detail/" + data[i]._id + "'><label>"+ data[i].productname +"</label></a></p><div>")
+                }
+                }
+                $(".search-area div").css("background-color", "white");
+                $(".search-area div p").css("background-color", "white");
+                $(".search-area div p").css("border", "5px solid white");
+                $(".search-area div p").css("margin", "0px");
+                $(".search-area div p img").css("width", "35px");
+                $(".search-area div p img").css("height", "35px");
+                    
+                });
+            });
+
+            function getMatchingWords(value, callback) {
+                $.ajax('products/find/' + value + '/', {
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) { if ( callback ) callback(data); },
+                    error  : function()     { if ( callback ) callback(null); }
+                });
+            }
+
+            //alert(data.toSource());
+        });
+    </script>
+
+        
+    
+
 </head>
 
 <body>
@@ -80,13 +131,13 @@
                             </li>
                             <li><a href="/blog">Blog</a></li>
                             <li><a href="/contact">Contact</a></li>
-                            <% if (user){{%>
-                            <li><a href="/products/addProduct">Add Product</a></li>
-                            <li><a href="/contact"><span class="glyphicon glyphicon-user"></span><%=user.username%></a></li>
-                            <li><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>      <% }} %>
-                            <% if (!user){{%>
-                            <li><a href="/users/register"><span class="glyphicon glyphicon-log-in"></span> Login</a>
-                            <% }} %>
+                            <% if(!user){ %>
+                                <li><a href="/users/register"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                              <% } else{ %>  
+                                <li><a href="/products/addProduct">Add Product</a></li>
+                                <li><a href="/contact"><span class="glyphicon glyphicon-user"></span><%=user.username%></a></li>
+                                <li><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                             <% } %>
                         </ul>
                     </div>
                     <!-- Nav End -->
@@ -97,8 +148,8 @@
             <div class="header-meta d-flex clearfix justify-content-end">
                 <!-- Search Area -->
                 <div class="search-area">
-                    <form action="#" method="post">
-                        <input type="search" name="search" id="headerSearch" placeholder="Type for search">
+                    <form>
+                        <input id="autocomplete" type="search" name="search"  placeholder="Type for search" autocomplete="off">
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
                 </div>
@@ -142,15 +193,18 @@
                 <!-- Single Cart Item -->
                 <%if (cart.items) { %>
                 <% cart.items.forEach(function(product) { %>
+                <!--<form action="#" method="#">
+                    <input type="hidden" id="thisProductId" name="thisProductId" value="<%= product.id%>">
+                    <input type="hidden" id="thisProductNonce" name="thisProductNonce" value="<%= nonce %>">-->
                 
                   <div class="single-cart-item">
                       <a href="/products/product_detail/<%=product._id%>" class="product-image">
                           <img src="/products/img/product-img/product-1.jpg" class="cart-thumb" alt="">
                           <!-- Cart Item Desc -->
                           <div class="cart-item-desc">
-                              <form action="/cart/remove/<%= product.id%>/<%= nonce %>" method="get">
-                            <button class="product-remove" href="/cart/remove/<%= product.id%>/<%= nonce %>"><i class="fa fa-close" aria-hidden="true"></i></button>
-                              </form>
+                            <form action="/cart/remove/<%= product.id%>/<%= nonce %>" method="#">
+                                <button id="removeFromCart" class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></button>
+                            </form>
                               <span class="badge">Mango</span>
                               <h6><%= product.productname %></h6>
                               <p class="size">Quantity: <%= product.qty %></p>
