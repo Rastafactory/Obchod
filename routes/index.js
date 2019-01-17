@@ -5,13 +5,6 @@ var Product = require('../models/product');
 var Security = require('../lib/Security');
 
 router.get('/', function(req, res, next) {
-    if(!req.session.cart) {
-      req.session.cart = {
-          items: [],
-          totals: 0.00,
-          formattedTotals: ''
-      };
-    }
     
     Product.find({}).then(products => {
         let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });

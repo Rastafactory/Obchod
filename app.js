@@ -92,7 +92,15 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('*', function(req, res, next){
+app.use(['*', '/products/*', '/checkout', '/cart'], function(req, res, next){
+    if(!req.session.cart) {
+      req.session.cart = {
+          items: [],
+          totals: 0.00,
+          formattedTotals: ''
+      };
+    }
+
     res.locals.user = req.user || null;
     res.locals.cart = req.session.cart || null;
     res.locals.nonce = Security.md5(req.sessionID + req.headers['user-agent']);

@@ -20,14 +20,18 @@ var upload = multer({
 }).array('img',5);;
 
 router.get('/', function(req, res, next) {
+    var manufacturers = [];
+
     Product.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
         let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
         products.forEach( (product) => {
             product.formattedPrice = format.format(product.price);
+            manufacturers.indexOf(product.manufacturer) === -1 ? manufacturers.push(product.manufacturer) : console.log("This item already exists");
         });
     res.render('products', {
         cart: req.session.cart,
         products: products,
+        manufacturers: manufacturers,
         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
     });
 
@@ -55,6 +59,22 @@ router.get('/product_detail/:id', function(req, res, next) {
         }     
     }
     )  
+});
+
+router.get('/find/:productname/', function(req, res, next) {
+    var productname = req.params.productname;
+    var query = '/.*' + productname + '.*/';
+    console.log(productname);
+
+    Product.find({"productname": {$regex: productname, $options: 'i'}} ,function(err, products) {
+        var productMap = {};
+    
+        products.forEach(function(product) {
+          productMap[products._id] = product;
+        });
+        
+          res.send(products);
+    })
 });
 
 router.get('/addProduct', Security.ensureAuthenticated, function(req, res, next) {
