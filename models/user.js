@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var config = require('../config.js');
 
-mongoose.connect('mongodb://footballFactoryAdmin:footballFactoryAdm123@ds231537.mlab.com:31537/footballfactory');
+mongoose.connect(config.mongoDBConnectionString);
 
 var db = mongoose.connection;
 
@@ -64,13 +65,3 @@ module.exports.validateEmailAccessibility = function (email, callback){
         }
     });
  }
-
-/*
- 
- validateEmailAccessibility(email).then(function(valid) {
-   if (valid) {
-     alert("Email is valid");
-   } else {
-     alert("Email already used");
-   }
- });*/
