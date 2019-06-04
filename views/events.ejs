@@ -1,0 +1,192 @@
+<% include ./header.ejs %>
+
+<!-- Page Content -->
+<div class="container">
+
+        <!-- Page Heading -->
+        <h1 class="my-4">Page Heading
+          <small>Secondary Text</small>
+        </h1>
+        
+            <div class="row">
+                <div class="col btn-group" role="group" aria-label="Basic example">
+                    <button id="callapseButton1" type="button" class="btn btn-secondary">Current Events</button>
+                    <button id="callapseButton2" type="button" class="btn btn-secondary">Finished Events</button>
+                    <button id="callapseButton3" type="button" class="btn btn-secondary">Create Event</button>
+                </div>
+            </div></br>
+      
+        <div class="row collapse show collapseExample1">
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                <div class="card-body">
+                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                </div>
+                <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Number Of Players
+                          <span class="badge badge-primary badge-pill">14</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Place:
+                          <span>Vendelina u Javorku</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Date and Time:
+                          <span>27/June/2019 14:00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <button class="btn btn-outline-secondary">Attend</button>
+                        </li>
+                </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                <div class="card-body">
+                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                </div>
+                <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Number Of Players
+                          <span class="badge badge-primary badge-pill">14</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Place:
+                          <span>Vendelina u Javorku</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Date and Time:
+                          <span>27/June/2019 14:00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <button class="btn btn-outline-secondary">Attend</button>
+                        </li>
+                </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                <div class="card-body">
+                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                </div>
+                <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Number Of Players
+                          <span class="badge badge-primary badge-pill">14</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Place:
+                          <span>Vendelina u Javorku</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Date and Time:
+                          <span>27/June/2019 14:00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <button class="btn btn-outline-secondary">Attend</button>
+                        </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row collapse collapseExample2">
+                <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                        <div class="card-body">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                        </div>
+                        <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  Number Of Players
+                                  <span class="badge badge-primary badge-pill">14</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  Place:
+                                  <span>Vendelina u Javorku</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                  Date and Time:
+                                  <span>27/June/2019 14:00</span>
+                                </li>
+                        </ul>
+                    </div>
+                  </div>
+
+        </div>
+
+        <div class="row collapse collapseExample3">
+                <div class="col mb-4">
+                                <form id="createEventForm">
+                                        <div class="form-group">
+                                            <label>Place</label>
+                                            <input type="text" id="place" class="form-control" placeholder="1234 Main St">
+                                        </div>
+                                        <div class="form-row">
+                                          <div class="form-group col-md-6">
+                                            <label>Date</label>
+                                            <input type="date" id="date" class="form-control">
+                                          </div>
+                                          <div class="form-group col-md-6">
+                                            <label>Time</label>
+                                            <input type="time" id="time" class="form-control">
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Destription (Optional)</label>
+                                            <textarea class="form-control" id="description" rows="3"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                                            <label class="form-check-label" for="gridCheck">
+                                              Confirm
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                    </form>
+                </div>
+        </div>
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center collapseExample1">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+        </ul>
+      
+</div>
+<!-- /.container -->
+
+</body>
+
+<!-- Footer -->
+<footer class="page-footer font-small cyan darken-3">
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2019 Made by Rastafactory
+    </div>
+</footer>
+<!-- Footer -->
+
+</html>
