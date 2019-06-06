@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var config = require('../config.js');
 
-mongoose.connect(config.mongoDBConnectionString);
+mongoose.connect(config.mongoDBConnectionString, { useNewUrlParser: true });
 
 var db = mongoose.connection;
 
@@ -30,6 +30,10 @@ var UserSchema = mongoose.Schema({
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
+
+module.exports.getAllUsers = function(callback){
+    User.find({}, {firstname: 1, lastname: 1, email: 1, username: 1}, callback)
+}
 
 module.exports.getUserById = function(id, callback){
     User.findById(id, callback);

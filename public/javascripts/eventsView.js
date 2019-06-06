@@ -24,5 +24,40 @@ $ (function() {
         $('.collapseExample1, .collapseExample2').collapse("hide");
     });
 
-    $('#datetimepicker4').datetimepicker();
+    $("#createEventForm").submit(function(e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        var form = $(this);
+        
+        $.ajax({
+               type: "POST",
+               url: '/events/createEvent',
+               data: form.serialize(), // serializes the form's elements.
+               success: function(event)
+               {
+                    alert('Event number: ' + event.event_id + ' has been successfully created.');
+                    location.reload();
+               }
+             });
+    });
 });
+
+function submitCancelEvent() {
+    console.log('submitCancelEventButton');
+}
+
+function submitFinishEvent() {
+    console.log('submitFinishEventButton');
+}
+
+function attendEvent(eventId) {
+    console.log(eventId);
+    $.ajax({
+        type: "POST",
+        url: '/events/attendOnEvent/' + eventId,
+        success: function(data)
+        {
+             alert(data);
+             location.reload();
+        }
+      });
+}
