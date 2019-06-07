@@ -95,7 +95,8 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
             email: email,
             username: username,
             password: password,
-            profileimage: profileimage
+            profileimage: profileimage,
+            admin: false
         });
         
         User.createUser(newUser, function(err, user){

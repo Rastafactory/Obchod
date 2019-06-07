@@ -5,6 +5,10 @@ let date = require('date-and-time');
 
 router.get('/', function(req, res, next) {
 
+    var owner = req.user._id;
+    var admin = req.user.admin;
+    console.log(owner)
+
     Event.getAllEvents(function(err, events) {
         if(err) throw err;
 
@@ -21,6 +25,8 @@ router.get('/', function(req, res, next) {
         }
 
         res.render('events', {
+            admin: admin,
+            owner: owner,
             currentEvents: currentEvents,
             finishedEvents: finishedEvents            
         });

@@ -26,6 +26,9 @@ var UserSchema = mongoose.Schema({
     },
     profileimage: {
         type: String
+    },
+    admin: {
+        type: Boolean
     }
 });
 

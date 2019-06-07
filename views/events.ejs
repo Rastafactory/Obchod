@@ -17,6 +17,7 @@
             </div></br>
       
         <div class="row collapse show collapseExample1">
+
             <% var i = 0; currentEvents.forEach(function(event) { i++; %>
               <div class="col-lg-6 mb-4">
                 <div class="card h-100">
@@ -42,8 +43,11 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <button id="attendButton" onclick="attendEvent('<%= event._id %>')" class="btn btn-outline-secondary">Attend</button>
-                                <button id="finishEventButton" class="btn btn-outline-secondary" data-toggle="modal" data-target="#finishEventModal">finishEvent</button>
-                                <button id="cancelEventButton" class="btn btn-outline-secondary" data-toggle="modal" data-target="#cancelEventModal">cancelEvent</button>
+                                <% if (owner == event.owner || admin){{%>
+                                  <button id="finishEventButton" class="btn btn-outline-secondary" data-toggle="modal" data-target="#finishEventModal">finishEvent</button>
+                                  <button id="cancelEventButton" class="btn btn-outline-secondary" data-toggle="modal" data-target="#cancelEventModal">cancelEvent</button>
+                                <% }} %>
+
                             </li>
                     </ul>
                 </div>
