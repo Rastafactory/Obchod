@@ -7,7 +7,7 @@ var db = mongoose.connection;
 // User Schema
 var EventSchema = mongoose.Schema({
     event_id: {
-        type: String,
+        type: Number,
         index: true
     },
     owner: {
@@ -45,9 +45,21 @@ module.exports.createEvent = function(newEvent, callback){
 }
 
 module.exports.getAllEvents = function(callback) {
-    Event.find(callback);
+    Event.find().sort({event_id:-1}).then(function(response) {
+        callback(response)
+    }).catch(function(error) {
+        console.log(error)
+    });
    }
 
 module.exports.attendOnEvent = function(id, player, callback){
     Event.update({_id: id}, {$addToSet:{'players':player}}, callback);
+}
+
+module.exports.getMaxEventId = function(callback){
+    Event.find().sort({event_id:-1}).limit(1).then(function(response) {
+        callback(response[0].event_id)
+    }).catch(function(error) {
+        console.log(error)
+    });
 }

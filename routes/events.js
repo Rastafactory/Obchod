@@ -7,11 +7,8 @@ router.get('/', function(req, res, next) {
 
     var owner = req.user._id;
     var admin = req.user.admin;
-    console.log(owner)
 
-    Event.getAllEvents(function(err, events) {
-        if(err) throw err;
-
+    Event.getAllEvents(function(events) {
         var currentEvents = [];
         var finishedEvents = [];
         for(var i = 0; i < events.length; i++) {
@@ -34,28 +31,28 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/createEvent', function(req, res, next) {
-
-    var event_id = Math.floor(Math.random()*900000) + 100000;
     var players = [];
     players.push(req.user);
-
     let now = new Date(req.body.date);
 
-    var newEvent = new Event({
-        event_id: event_id,
-        owner: req.user._id,
-        place: req.body.place,
-        date: date.format(now, 'DD/MMMM/YYYY'),
-        time: req.body.time,
-        description: req.body.description,
-        players: players,
-        status: 'new'
-    });
+    Event.getMaxEventId(function(maxId){
 
-    Event.createEvent(newEvent, function(err, event) {
-        if(err) throw err;
-        res.send(event);
-    });
+        var newEvent = new Event({
+            event_id: maxId + 1,
+            owner: req.user._id,
+            place: req.body.place,
+            date: date.format(now, 'DD/MMMM/YYYY'),
+            time: req.body.time,
+            description: req.body.description,
+            players: players,
+            status: 'new'
+        });
+        Event.createEvent(newEvent, function(err, event) {
+            if(err) throw err;
+            res.send(event);
+        });
+    })
+    
 });
 
 /*router.post('/cancelEvent/:id', function(req, res, next) {
