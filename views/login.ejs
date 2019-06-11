@@ -1,31 +1,31 @@
     <% include ./header.ejs %>
 
     <div class="container"><br>
-        <h1>Log In</h1><br>
-        <%- messages() %>
+      <h1>Log In</h1><br>
+      <%- messages() %>
 
-    <form method="post" action="/users/login" autocomplete="on">
-            <div class="form-row align-items-center">
-              <div class="col-sm-3 my-1">
-                <label class="sr-only" for="inlineFormInputGroupUsername">Username</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">@</div>
-                  </div>
-                  <input type="text" class="form-control" name="username" placeholder="Username">
-                </div>
+      <form method="post" action="/users/login" autocomplete="on">
+        <div class="form-row align-items-center">
+          <div class="col-sm-3 my-1">
+            <label class="sr-only" for="inlineFormInputGroupUsername">Username</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">@</div>
               </div>
-              <div class="col-sm-3 my-1">
-                <label class="sr-only" for="inlineFormInputName">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="eg. X8df!90EO">
+              <input type="text" class="form-control" name="username" placeholder="Username">
             </div>
-              <div class="col-auto my-1">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </div>
-          </form>
+          </div>
+          <div class="col-sm-3 my-1">
+            <label class="sr-only" for="inlineFormInputName">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="eg. X8df!90EO">
+          </div>
+          <div class="col-auto my-1">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
     </div>
 
-</body>
+    </body>
 
-</html>
+    </html>
