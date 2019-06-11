@@ -1,86 +1,88 @@
 <% include ./header.ejs %>
 
-    <!-- Page Content -->
-    <div class="container">
+<!-- Page Content -->
+<div class="container">
 
-      <!-- Portfolio Item Heading -->
-      <h1 class="my-4"><%=currentUser.username%>
-        <small><%=currentUser.firstname%> <%=currentUser.lastname%></small>
-      </h1>
+  <!-- Portfolio Item Heading -->
+  <h1 class="my-4"><%=currentUser.username%>
+    <small><%=currentUser.firstname%> <%=currentUser.lastname%></small>
+  </h1>
 
-      <!-- Portfolio Item Row -->
-      <div class="row">
+  <!-- Portfolio Item Row -->
+  <div class="row">
 
-        <div class="col">
-          <br>
-          <div class="w-75 h-75">
-            <img class="rounded img-fluid mx-auto d-block" src="/images/uploads/<%=currentUser.profileimage%>" alt="">
-          </div>
-          <br>
-          <div>
-            <button class="btn btn-outline-secondary">Upload Profile Image</button>
-          </div>
-        </div>
-
-        <div class="col">
-          <h3 class="my-3">Player Description</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-          <h3 class="my-3">Player Details</h3>
-          <ul>
-            <li>Games Played: </li>
-            <li>Wins: </li>
-            <li>Loses: </li>
-            <li>Goals: </li>
-            <li>Assists: </li>
-            <li>Points: </li>
-          </ul>
-        </div>
-
+    <div class="col">
+      <br>
+      <div class="w-75 h-75">
+        <img class="rounded img-fluid mx-auto d-block" src="/images/uploads/<%=currentUser.profileimage%>" alt="">
       </div>
-      <!-- /.row -->
-
-      <!-- Related Projects Row -->
-      <h3 class="my-4">Last Games Played</h3>
-
-      <div class="row">
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-              </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-              </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-              </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-              </a>
-        </div>
-
+      <br>
+      <div>
+        <button class="btn btn-outline-secondary">Upload Profile Image</button>
       </div>
-      <!-- /.row -->
-
     </div>
-    <!-- /.container -->
-  </body>
 
-  <!-- Footer -->
-  <footer class="page-footer font-small cyan darken-3">
-      <!-- Copyright -->
-      <div class="footer-copyright text-center py-3">© 2019 Made by Rastafactory
-      </div>
-  </footer>
-  <!-- Footer -->
+    <div class="col">
+      <h3 class="my-3">Player Description</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna
+        varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu
+        convallis placerat, felis enim.</p>
+      <h3 class="my-3">Player Details</h3>
+      <ul>
+        <li>Games Played: <%=currentUser.summary.gamesplayed%></li>
+        <li>Wins: <%=currentUser.summary.wins%></li>
+        <li>Loses: <%=currentUser.summary.losses%></li>
+        <li>Goals: <%=currentUser.summary.goals%></li>
+        <li>Assists: <%=currentUser.summary.assists%></li>
+        <li>Points: <%=currentUser.summary.points%></li>
+      </ul>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+  <!-- Related Projects Row -->
+  <h3 class="my-4">Last Games Played</h3>
+
+  <div class="row">
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+</body>
+
+<!-- Footer -->
+<footer class="page-footer font-small cyan darken-3">
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2019 Made by Rastafactory
+  </div>
+</footer>
+<!-- Footer -->
 
 </html>

@@ -35,15 +35,17 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle Sessions
 app.use(session({
-    secret:'sectret',
-    saveUninitialized: true,
-    resave: true
+  secret: 'sectret',
+  saveUninitialized: true,
+  resave: true
 }));
 
 // Passport
@@ -52,20 +54,20 @@ app.use(passport.session());
 
 // Validator
 app.use(expressValidator({
-    errorFormatter: function(param, msg, value){
-        var namespace = param.split('.')
-        , root = namespace.shift()
-        , formParam =root;
+  errorFormatter: function (param, msg, value) {
+    var namespace = param.split('.'),
+      root = namespace.shift(),
+      formParam = root;
 
-        while(namespace.length){
-            formParam += '[' + namespace.shift() + ']';
-        }
-        return{
-            param: formParam,
-            msg: msg,
-            value: value
-        };
+    while (namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
     }
+    return {
+      param: formParam,
+      msg: msg,
+      value: value
+    };
+  }
 }));
 
 app.use(flash());
@@ -74,14 +76,14 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('*', function(req, res, next){
-    res.locals.user = req.user || null;
-    next();
+app.get('*', function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
 });
 
-app.get(['/profile', '/profile/*', '/events', '/events/*', '/stats'], function(req, res, next){
-  if(req.isAuthenticated()){
-      return next();
+app.get(['/profile', '/profile/*', '/events', '/events/*', '/stats'], function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
   }
   res.redirect('/users/login');
 });
@@ -91,14 +93,14 @@ app.use('/users', users);
 app.use('/events', events);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -135,9 +137,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -158,8 +160,8 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
   debug('Listening on ' + bind);
 }

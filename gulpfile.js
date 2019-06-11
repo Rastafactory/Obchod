@@ -11,13 +11,13 @@ gulp.task('serve', function () {
 			'PORT': 3000
 		},
 		watch: jsFiles
-    };
-    console.log('Listening on port: ' + options.env.PORT);
+	};
+	console.log('Listening on port: ' + options.env.PORT);
 
 	return nodemon(options)
 		.on('restart', function (ev) {
-            console.log('restarting...');
-            console.log('Listening on port: ' + options.env.PORT);
-        });
-        
+			console.log('restarting...');
+			console.log('Listening on port: ' + options.env.PORT);
+		});
+
 });
