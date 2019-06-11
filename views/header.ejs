@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
   <body>
 
@@ -30,7 +31,7 @@
                     <a class="nav-link" href="/events">Events</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Your Account</a>
+                    <a class="nav-link" href="/profile/<%= user._id%>">Your Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/users/logout">Logout</a>

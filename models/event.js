@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var config = require('../config.js');
+var User = require('./user.js');
 
 mongoose.connect(config.mongoDBConnectionString, { useNewUrlParser: true });
 var db = mongoose.connection;
@@ -30,14 +31,38 @@ var EventSchema = mongoose.Schema({
     },
     status: {
         type: String
+    },
+    team1: {
+        type: Object
+    },
+    team2: {
+        type: Object
     }
 });
 
 var Event = module.exports = mongoose.model('Event', EventSchema);
 
 module.exports.getEventById = function(id, callback){
-    var query = {id: id};
+    var query = {_id: id};
     Event.findOne(query, callback);
+}
+
+module.exports.getEventByIdAndFetchPlayers = function(id, callback){
+    var query = {_id: id};
+    Event.findOne(query).then(function(response) {
+        var players = []
+        for(i=0;i<response.players.length;i++){
+            players.push(response.players[i]._id)
+        }
+
+        User.find({ _id : { $in : players }}).then(function(response) {
+            callback(response)
+        }).catch(function(error) {
+            console.log(error)
+        });
+    }).catch(function(error) {
+        console.log(error)
+    });
 }
 
 module.exports.createEvent = function(newEvent, callback){
@@ -62,4 +87,22 @@ module.exports.getMaxEventId = function(callback){
     }).catch(function(error) {
         console.log(error)
     });
+}
+
+module.exports.generateTeamsInEvent = function(id, team1, team2, callback){
+    var query = {_id: id};
+    var update = {
+        status: 'started',
+        team1 : team1,
+        team2 : team2
+    }
+    Event.update(query, update, callback);
+}
+
+module.exports.cancelEvent = function(id, callback){
+    Event.remove( {_id: id}).then(function(response) {
+        callback(response)
+    }).catch(function(error) {
+        console.log(error)
+    });;
 }

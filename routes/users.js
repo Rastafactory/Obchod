@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
-var upload = multer({dest: './uploads'});
+var upload = multer({dest: './public/images/uploads'});
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
@@ -96,7 +96,15 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
             username: username,
             password: password,
             profileimage: profileimage,
-            admin: false
+            admin: false,
+            summary: {
+                gamesplayed: 0,
+                wins: 0,
+                losses: 0,
+                goals: 0,
+                assists: 0,
+                points: 0
+            }
         });
         
         User.createUser(newUser, function(err, user){

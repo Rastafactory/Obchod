@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Event = require('../models/event');
 let date = require('date-and-time');
+var generator = require('../generator');
 
 router.get('/', function(req, res, next) {
 
@@ -12,7 +13,7 @@ router.get('/', function(req, res, next) {
         var currentEvents = [];
         var finishedEvents = [];
         for(var i = 0; i < events.length; i++) {
-            if (events[i].status == 'new') {
+            if (events[i].status == 'new' || events[i].status == 'started') {
                 currentEvents.push(events[i]);
             }else if(events[i].status == 'finished'){
                 finishedEvents.push(events[i]);
@@ -45,7 +46,15 @@ router.post('/createEvent', function(req, res, next) {
             time: req.body.time,
             description: req.body.description,
             players: players,
-            status: 'new'
+            status: 'new',
+            team1: {
+                goals: 0,
+                players: []
+            },
+            team2: {
+                goals: 0,
+                players: []
+            }
         });
         Event.createEvent(newEvent, function(err, event) {
             if(err) throw err;
@@ -55,28 +64,55 @@ router.post('/createEvent', function(req, res, next) {
     
 });
 
-/*router.post('/cancelEvent/:id', function(req, res, next) {
 
+
+router.post('/generateTeams/:id', function(req, res, next) {
+    var id = req.params.id;
+
+    Event.getEventByIdAndFetchPlayers(id, function(players){
+        generator.generateTwoTeams(players, function(team1, team2){
+            Event.generateTeamsInEvent(id, team1, team2, function(err, data){
+                if(err){
+                    console.log(err)
+                    res.send('Unable to generate teams.');
+                }else{
+                    res.send('Teams are ready. Enjoy the game!');
+                }
+            })   
+        })
+    })
+});
+
+router.get('/finishEvent/:id', function(req, res, next) {
+    var id = req.params.id;
+    console.log(id);
+    res.send(id);
+});
+
+router.post('/cancelEvent/:id', function(req, res, next) {
     var id = req.params.id;
     console.log(id);
 
-    Event.cancelEvent(id, function(err, event) {
-        if(err) throw err;
-        res.send('Event has been canceled.');
+    Event.cancelEvent(id, function(response) {
+        res.send(response);
     });
-});*/
+});
 
 router.post('/attendOnEvent/:id', function(req, res, next) {
 
-    var id = req.params.id,
-        player = req.user;
+    var id = req.params.id;
+    var player = {
+            _id : req.user._id,
+            username : req.user.username,
+            profileimage : req.user.profileimage
+        }
 
     Event.attendOnEvent(id, player, function(err, event) {
         if(err){
             console.log(err)
             res.send('Unable to participate on event.');
         }else{
-            res.send(player);
+            res.send('Well done! You will participate on this event.');
         }
     });
 });

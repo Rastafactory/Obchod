@@ -1,6 +1,5 @@
 $ (function() {
     $("#callapseButton1").on("click", function () {
-        
         $("#callapseButton1").addClass("active");
         $("#callapseButton2").removeClass("active");
         $("#callapseButton3").removeClass("active");
@@ -41,8 +40,55 @@ $ (function() {
     });
 });
 
-function submitCancelEvent() {
-    console.log('submitCancelEventButton');
+function generateTeams(id) {
+    $.ajax({
+        type: "POST",
+        url: "events/generateTeams/" + id,
+        success: function(data){
+            console.log(data)
+            alert(data);
+            location.reload();
+        }
+      });
+} 
+
+function submitCancelEvent(eventId) {
+  $( "#dialog" ).dialog({
+    width: "60%",
+    title: 'Are you sure you want to cancel this event?',
+    buttons: [
+      {
+        text: "No",
+        icon: "ui-icon-close",
+        "class": "btn btn-outline-primary mr-2",
+        click: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Yes",
+        icon: "ui-icon-check",
+        "class": "btn btn-outline-danger",
+        click: function() {
+          $.ajax({
+            type: "POST",
+            url: "events/cancelEvent/" + eventId,
+            success: function(data){
+                console.log(data)
+                location.reload();
+            }
+          });
+        }
+      }
+    ]
+  });
+    var $dialog = $(".ui-dialog");
+    $dialog.addClass("modal-content");
+    $dialog.find(".ui-dialog-titlebar").addClass("modal-header bg-light").find(".ui-button").addClass("close").text("x");
+    $dialog.find(".ui-dialog-titlebar").find(".ui-dialog-title").addClass("modal-title h4");
+    $dialog.find(".ui-dialog-buttonpane").addClass("modal-footer");
+    $dialog.find(".ui-dialog-content").addClass("modal-body");
+    //$dialog.find(".ui-dialog-content").addClass("modal-body").text('test');
 }
 
 function submitFinishEvent() {

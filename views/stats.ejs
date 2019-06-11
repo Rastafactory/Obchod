@@ -1,6 +1,11 @@
 <% include ./header.ejs %>
 
-</br>     
+<!-- Page Content -->
+<div class="container">
+
+  <!-- Page Heading -->
+  <h1 class="my-4">Statistics</h1>
+
       <table class="table">
         <thead class="thead-light">
           <tr>
@@ -19,7 +24,7 @@
         <tbody>
             <% var i = 0; players.forEach(function(player) { i++; %>
               <tr>
-                  <th scope="row">1</th>
+                  <th scope="row"><%=i%></th>
                   <td><%=player.firstname%></td>
                   <td><%=player.lastname%></td>
                   <td><%=player.username%></td>
@@ -33,6 +38,7 @@
             <% }); %>
         </tbody>
       </table>
+</div>
   
   </body>
 

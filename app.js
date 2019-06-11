@@ -79,7 +79,7 @@ app.get('*', function(req, res, next){
     next();
 });
 
-app.get(['/profile', '/events', '/stats'], function(req, res, next){
+app.get(['/profile', '/profile/*', '/events', '/events/*', '/stats'], function(req, res, next){
   if(req.isAuthenticated()){
       return next();
   }
