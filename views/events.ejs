@@ -41,17 +41,21 @@
           <% if(event.status == 'started'){ %>
           <div class="row">
             <div class="col-6">Team 1:
-              <% event.players.forEach(function(player) {%>
-              <a href="#">
-                <span class="badge badge-primary badge-pill"><%=player.username%></span>
-              </a>
+              <% event.team1.players.forEach(function(player) {%>
+                <% if(event.owner == player._id){ %>
+                  <a href="#" class="badge badge-success"><%=player.username%></a>
+                  <% } else{ %>
+                  <a href="#" class="badge badge-primary"><%=player.username%></a>
+                  <% } %>
               <% }); %>
             </div>
             <div class="col-6">Team 2:
-              <% event.players.forEach(function(player) {%>
-              <a href="#">
-                <span class="badge badge-primary badge-pill"><%=player.username%></span>
-              </a>
+              <% event.team2.players.forEach(function(player) {%>
+                <% if(event.owner == player._id){ %>
+                  <a href="#" class="badge badge-success"><%=player.username%></a>
+                  <% } else{ %>
+                  <a href="#" class="badge badge-primary"><%=player.username%></a>
+                  <% } %>
               <% }); %>
             </div>
           </div>
@@ -94,31 +98,66 @@
 
   <div class="row collapse collapseExample2">
     <% var i = 0; finishedEvents.forEach(function(event) { i++; %>
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <% event.players.forEach(function(player) {%>
-          <a href="#">
-            <span class="badge badge-primary badge-pill"><%=player.username%></span>
-          </a>
-          <% }); %>
+      <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Event Number:
+            <span><b><%=event.event_id%></b></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Status:
+            <span><b><%=event.status%></b></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Result:
+            <% if(event.team1.goals > event.team2.goals){ %>
+              <span><b><%=event.team1.goals%> : </b><%=event.team2.goals%></span>
+            <% } %>
+            <% if(event.team2.goals > event.team1.goals){ %>
+              <span><%=event.team1.goals%> : <b><%=event.team2.goals%></b></span>
+            <% } %>
+            <% if(event.team1.goals == event.team2.goals){ %>
+              <span><%=event.team1.goals%> : <%=event.team2.goals%></span>
+            <% } %>
+          </li>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">Team 1:
+                <% event.team1.players.forEach(function(player) {%>
+                  <% if(event.owner == player._id){ %>
+                    <a href="#" class="badge badge-success"><%=player.username%></a>
+                    <% } else{ %>
+                    <a href="#" class="badge badge-primary"><%=player.username%></a>
+                    <% } %>
+                <% }); %>
+              </div>
+              <div class="col-6">Team 2:
+                <% event.team2.players.forEach(function(player) {%>
+                  <% if(event.owner == player._id){ %>
+                    <a href="#" class="badge badge-success"><%=player.username%></a>
+                    <% } else{ %>
+                    <a href="#" class="badge badge-primary"><%=player.username%></a>
+                    <% } %>
+                <% }); %>
+              </div>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Number Of Players
+              <span class="badge badge-primary badge-pill"><%=event.players.length%></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Place:
+              <span><%=event.place%></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Date and Time:
+              <span><%=event.date%> <%=event.time%></span>
+            </li>
+          </ul>
         </div>
-        <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Number Of Players
-            <span class="badge badge-primary badge-pill"><%=event.players.length%></span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Place:
-            <span><%=event.place%></span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Date and Time:
-            <span><%=event.date%></span>
-          </li>
-        </ul>
       </div>
-    </div>
     <% }); %>
   </div>
 
@@ -159,7 +198,10 @@
 <!-- /.container -->
 
 <!-- Dialog -->
-<div id="dialog">
+<div id="cancelEventDialog">
+</div>
+
+<div id="finishEventDialog">
 </div>
 
 </body>

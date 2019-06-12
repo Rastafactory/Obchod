@@ -10,8 +10,8 @@ module.exports.generateTwoTeams = function (players, callback) {
     };
 
     for (i = 0; i < players.length; i++) {
-        team1.players.push(players[i].username)
-        team2.players.push(players[i].username)
+        team1.players.push(players[i])
+        team2.players.push(players[i])
     }
 
     callback(team1, team2)

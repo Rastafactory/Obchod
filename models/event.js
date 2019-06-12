@@ -51,6 +51,17 @@ module.exports.getEventById = function (id, callback) {
     Event.findOne(query, callback);
 }
 
+module.exports.finishEvent = function (id, score, callback) {
+    var query = {
+        _id: id
+    };
+    Event.findOneAndUpdate(query, { $set: {'team1.goals': Number(score.team1), 'team2.goals': Number(score.team2)}, "status": "finished"}, { new: true }).then(function (response) {
+        callback(response)
+    }).catch(function (error) {
+        console.log(error)
+    });;
+}
+
 module.exports.getEventByIdAndFetchPlayers = function (id, callback) {
     var query = {
         _id: id

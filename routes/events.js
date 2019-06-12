@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Event = require('../models/event');
+var User = require('../models/user');
 let date = require('date-and-time');
 var generator = require('../generator');
 
@@ -83,10 +84,42 @@ router.post('/generateTeams/:id', function (req, res, next) {
     })
 });
 
-router.get('/finishEvent/:id', function (req, res, next) {
+router.post('/finishEvent/:id', function (req, res, next) {
     var id = req.params.id;
-    console.log(id);
-    res.send(id);
+    var score = req.body;
+    console.log(score);
+
+    Event.finishEvent(id, score, function(response){
+            var team1 = [];
+            var team2 = [];
+            for(i=0;i<response.team1.players.length;i++){
+                team1.push(response.team1.players[i]._id)
+            }
+            for(i=0;i<response.team1.players.length;i++){
+                team2.push(response.team2.players[i]._id)
+            }
+
+            if(response.team1.goals==response.team2.goals){
+                User.userFinishedEvent(team1, team2, 'draw', function(){
+                    console.log('It was a draw.');
+                    res.send({message: 'It was a draw.'});
+                    
+                })
+            }else if(response.team1.goals>response.team2.goals){
+                User.userFinishedEvent(team1, team2, 'firstTeamWon', function(){
+                    console.log('First team has won.');
+                    res.send({message: 'First team has won.'})
+                })           
+            }else if(response.team1.goals<response.team2.goals){
+                User.userFinishedEvent(team1, team2, 'secondTeamWon', function(){
+                    console.log('Second team has won.');
+                    res.send({message: 'Second team has won.'})
+                }) 
+            }else{
+                console.log('Unable to compare score.');
+                res.send({message: 'Unable to compare score.'})
+            }
+    })
 });
 
 router.post('/cancelEvent/:id', function (req, res, next) {

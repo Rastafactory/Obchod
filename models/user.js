@@ -62,6 +62,46 @@ module.exports.getUserByUsername = function (username, callback) {
     User.findOne(query, callback);
 }
 
+module.exports.userFinishedEvent = function (team1, team2, result, callback) {
+    if(result=='draw'){
+        var allPlayers = team1.concat(team2);
+        console.log(allPlayers)
+        var query = {
+            _id: { $in: allPlayers}
+        };
+
+        User.updateMany(query, { $inc: { "summary.gamesplayed": 1, "summary.draws": 1 }}).then(function (data) {
+            callback(data)
+        }).catch(function (error) {
+            console.log(error)
+        });
+    }
+
+    if(result=='firstTeamWon'){
+        User.updateMany({_id: { $in: team1}}, { $inc: { "summary.gamesplayed": 1, "summary.wins": 1 }}).then(function () {
+            User.updateMany({_id: { $in: team2}}, { $inc: { "summary.gamesplayed": 1, "summary.losses": 1 }}).then(function (data) {
+                callback(data)
+            }).catch(function (error) {
+                console.log(error)
+            });
+        }).catch(function (error) {
+            console.log(error)
+        });
+    }
+
+    if(result=='secondTeamWon'){
+        User.updateMany({_id: { $in: team2}}, { $inc: { "summary.gamesplayed": 1, "summary.wins": 1 }}).then(function () {
+            User.updateMany({_id: { $in: team1}}, { $inc: { "summary.gamesplayed": 1, "summary.losses": 1 }}).then(function (data) {
+                callback(data)
+            }).catch(function (error) {
+                console.log(error)
+            });
+        }).catch(function (error) {
+            console.log(error)
+        });
+    }
+}
+
 module.exports.comparePassword = function (candidatePassword, hash, callback) {
     bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
         callback(null, isMatch);

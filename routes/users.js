@@ -109,6 +109,7 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
             summary: {
                 gamesplayed: 0,
                 wins: 0,
+                draws: 0,
                 losses: 0,
                 goals: 0,
                 assists: 0,
