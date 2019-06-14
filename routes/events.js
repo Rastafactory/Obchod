@@ -7,7 +7,11 @@ var generator = require('../generator');
 
 router.get('/', function (req, res, next) {
 
-    var owner = req.user._id;
+    var loggedUser = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage
+    }
     var admin = req.user.admin;
 
     Event.getAllEvents(function (events) {
@@ -25,7 +29,7 @@ router.get('/', function (req, res, next) {
 
         res.render('events', {
             admin: admin,
-            owner: owner,
+            loggedUser: loggedUser,
             currentEvents: currentEvents,
             finishedEvents: finishedEvents
         });
@@ -71,7 +75,7 @@ router.post('/generateTeams/:id', function (req, res, next) {
     var id = req.params.id;
 
     Event.getEventByIdAndFetchPlayers(id, function (players) {
-        generator.generateTwoTeams(players, function (team1, team2) {
+        generator.generateTwoTeams(players, players.length, function (team1, team2) {
             Event.generateTeamsInEvent(id, team1, team2, function (err, data) {
                 if (err) {
                     console.log(err)
