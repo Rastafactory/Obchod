@@ -80,24 +80,13 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
 
     //Check Errors
     var errors = req.validationErrors();
-    var emailNotAvailable = false;
-
-    User.validateEmailAccessibility(email, function (result) {
-        if (result) {
-            emailNotAvailable = true;
-        }
-    });
 
     if (errors) {
         console.log(errors);
         res.render('register', {
             errors: errors
         });
-    } else if (emailNotAvailable) {
-        res.render('register', {
-            errors: 'Email is already used. Please use another one.'
-        });
-    } else {
+    }else {
         var newUser = new User({
             firstname: firstname,
             lastname: lastname,
@@ -117,15 +106,18 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
             }
         });
 
-        User.createUser(newUser, function (err, user) {
-            if (err) throw err;
-            console.log(user);
+        User.createUser(newUser, function (result) {
+            if (result == 'bad') {
+                res.render('register', {
+                    errors: [ { msg: 'Email or username is already used.'} ]
+                });
+            } else {
+                req.flash('success', 'You are now registered and can login');
+
+                res.location('/users/login');
+                res.redirect('/users/login');
+            }
         });
-
-        req.flash('success', 'You are now registered and can login');
-
-        res.location('/users/login');
-        res.redirect('/users/login');
     }
 });
 

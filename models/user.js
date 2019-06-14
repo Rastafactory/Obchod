@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var config = require('../config.js');
+var uniqueValidator = require('mongoose-unique-validator');
 
 mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: true
@@ -11,7 +12,9 @@ var db = mongoose.connection;
 // User Schema
 var UserSchema = mongoose.Schema({
     username: {
-        type: String
+        type: String,
+        unique: true,
+        required: true
     },
     firstname: {
         type: String
@@ -20,11 +23,13 @@ var UserSchema = mongoose.Schema({
         type: String
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
-        index: true
+        unique: true,
+        required: true
     },
     profileimage: {
         type: String
@@ -112,20 +117,12 @@ module.exports.createUser = function (newUser, callback) {
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(newUser.password, salt, function (err, hash) {
             newUser.password = hash;
-            newUser.save(callback);
+            newUser.save().then(function (result) {
+                callback('good')
+            }).catch(function (error) {
+                console.log(error)
+                callback('bad')
+            });;
         });
     })
-}
-
-module.exports.validateEmailAccessibility = function (email, callback) {
-    var query = {
-        email: email
-    };
-    User.findOne(query).then(function (err, result) {
-        if (err) {
-            console.log(err)
-        } else {
-            callback(result)
-        }
-    });
 }
