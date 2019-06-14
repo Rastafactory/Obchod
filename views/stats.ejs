@@ -15,7 +15,8 @@
         <th scope="col">Nickname</th>
         <th scope="col">Games Played</th>
         <th scope="col">Wins</th>
-        <th scope="col">Loses</th>
+        <th scope="col">Draws</th>
+        <th scope="col">Losses</th>
         <th scope="col">Goals</th>
         <th scope="col">Assists</th>
         <th scope="col">Points</th>
@@ -30,6 +31,7 @@
         <td><a href="/profile/<%= player._id%>"><%=player.username%></a></td>
         <td><%=player.summary.gamesplayed%></td>
         <td><%=player.summary.wins%></td>
+        <td><%=player.summary.draws%></td>
         <td><%=player.summary.losses%></td>
         <td><%=player.summary.goals%></td>
         <td><%=player.summary.assists%></td>
