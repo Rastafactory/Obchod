@@ -86,7 +86,7 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
         res.render('register', {
             errors: errors
         });
-    }else {
+    } else {
         var newUser = new User({
             firstname: firstname,
             lastname: lastname,
@@ -109,7 +109,9 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
         User.createUser(newUser, function (result) {
             if (result == 'bad') {
                 res.render('register', {
-                    errors: [ { msg: 'Email or username is already used.'} ]
+                    errors: [{
+                        msg: 'Email or username is already used.'
+                    }]
                 });
             } else {
                 req.flash('success', 'You are now registered and can login');

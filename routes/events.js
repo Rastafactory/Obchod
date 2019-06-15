@@ -36,9 +36,40 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.post('/assignGoalsAndAssists/:id', function (req, res, next) {
+    var id = req.params.id;
+    var data = req.body;
+    console.log(data);
+
+    Event.getEventById(id, function (event) {
+        var team1 = event.team1;
+        var team2 = event.team2;
+        if (data.team == 'team1') {
+            team1.players[data.playerId].goals = Number(data.goals)
+            team1.players[data.playerId].assists = Number(data.assists)
+        } else if (data.team == 'team2') {
+            team2.players[data.playerId].goals = Number(data.goals)
+            team2.players[data.playerId].assists = Number(data.assists)
+        }
+
+        Event.assignGoalsAndAssists(id, team1, team2, function () {
+            res.send({message: 'Goals and assists have been assigned.'});
+        })
+    })
+});
+
 router.post('/createEvent', function (req, res, next) {
     var players = [];
-    players.push(req.user);
+    var player = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage,
+        summary: req.user.summary,
+        goals: 0,
+        assists: 0
+    }
+
+    players.push(player);
     let now = new Date(req.body.date);
 
     Event.getMaxEventId(function (maxId) {
@@ -74,8 +105,8 @@ router.post('/createEvent', function (req, res, next) {
 router.post('/generateTeams/:id', function (req, res, next) {
     var id = req.params.id;
 
-    Event.getEventByIdAndFetchPlayers(id, function (players) {
-        generator.generateTwoTeams(players, players.length, function (team1, team2) {
+    Event.getEventById(id, function (event) {
+        generator.generateTwoTeams(event.players, event.players.length, function (team1, team2) {
             Event.generateTeamsInEvent(id, team1, team2, function (err, data) {
                 if (err) {
                     console.log(err)
@@ -88,47 +119,92 @@ router.post('/generateTeams/:id', function (req, res, next) {
     })
 });
 
+router.get('/finishedEvent/:id', function (req, res, next) {
+    var id = req.params.id;
+    var loggedUser = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage,
+        admin: req.user.admin
+    }
+
+    Event.getEventById(id, function (result) {
+        if (result.status == 'finished') {
+            var event = result;
+        } else {
+            console.log('another status.')
+        }
+
+        res.render('finishedEvent', {
+            event: event,
+            loggedUser: loggedUser
+        });
+    })
+});
+
 router.post('/finishEvent/:id', function (req, res, next) {
     var id = req.params.id;
     var score = req.body;
     console.log(score);
 
-    Event.finishEvent(id, score, function(response){
-            var team1 = [];
-            var team2 = [];
-            for(i=0;i<response.team1.players.length;i++){
-                team1.push(response.team1.players[i]._id)
-            }
-            for(i=0;i<response.team1.players.length;i++){
-                team2.push(response.team2.players[i]._id)
-            }
+    Event.finishEvent(id, score, function (response) {
+        var team1 = [];
+        var team2 = [];
+        for (i = 0; i < response.team1.players.length; i++) {
+            team1.push(response.team1.players[i]._id)
+        }
+        for (i = 0; i < response.team1.players.length; i++) {
+            team2.push(response.team2.players[i]._id)
+        }
 
-            if(response.team1.goals==response.team2.goals){
-                User.userFinishedEvent(team1, team2, 'draw', function(){
-                    console.log('It was a draw.');
-                    res.send({message: 'It was a draw.'});
-                    
+        if (response.team1.goals == response.team2.goals) {
+            User.userFinishedEvent(team1, team2, 'draw', function () {
+                console.log('It was a draw.');
+                res.send({
+                    message: 'It was a draw.'
+                });
+
+            })
+        } else if (response.team1.goals > response.team2.goals) {
+            User.userFinishedEvent(team1, team2, 'firstTeamWon', function () {
+                console.log('First team has won.');
+                res.send({
+                    message: 'First team has won.'
                 })
-            }else if(response.team1.goals>response.team2.goals){
-                User.userFinishedEvent(team1, team2, 'firstTeamWon', function(){
-                    console.log('First team has won.');
-                    res.send({message: 'First team has won.'})
-                })           
-            }else if(response.team1.goals<response.team2.goals){
-                User.userFinishedEvent(team1, team2, 'secondTeamWon', function(){
-                    console.log('Second team has won.');
-                    res.send({message: 'Second team has won.'})
-                }) 
-            }else{
-                console.log('Unable to compare score.');
-                res.send({message: 'Unable to compare score.'})
-            }
+            })
+        } else if (response.team1.goals < response.team2.goals) {
+            User.userFinishedEvent(team1, team2, 'secondTeamWon', function () {
+                console.log('Second team has won.');
+                res.send({
+                    message: 'Second team has won.'
+                })
+            })
+        } else {
+            console.log('Unable to compare score.');
+            res.send({
+                message: 'Unable to compare score.'
+            })
+        }
+    })
+});
+
+router.get('/submitGoalsAndAssists/:id', function (req, res, next) {
+    var id = req.params.id;
+    var loggedUser = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage,
+        admin: req.user.admin
+    }
+    console.log(id);
+
+    Event.getEventById(id, function (event) {
+        res.send({message: 'Goals and assists have been submitted.'});
     })
 });
 
 router.post('/cancelEvent/:id', function (req, res, next) {
     var id = req.params.id;
-    console.log(id);
 
     Event.cancelEvent(id, function (response) {
         res.send(response);
@@ -141,7 +217,10 @@ router.post('/attendOnEvent/:id', function (req, res, next) {
     var player = {
         _id: req.user._id,
         username: req.user.username,
-        profileimage: req.user.profileimage
+        profileimage: req.user.profileimage,
+        summary: req.user.summary,
+        goals: 0,
+        assists: 0
     }
 
     Event.attendOnEvent(id, player, function (err, event) {

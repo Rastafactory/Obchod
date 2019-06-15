@@ -10,9 +10,14 @@
 
   <div class="row">
     <div class="col btn-group" role="group" aria-label="Basic example">
-      <button id="callapseButton1" type="button" class="btn btn-light active">Current Events</button>
-      <button id="callapseButton2" type="button" class="btn btn-light">Finished Events</button>
-      <button id="callapseButton3" type="button" class="btn btn-light">Create Event</button>
+      <button id="callapseButton1" type="button" class="btn btn-light active" data-toggle="tooltip" data-placement="top"
+        title="Here you can see the list of the events which are going to be played. If you would like to join, just click on Attend button.">Current
+        Events</button>
+      <button id="callapseButton2" type="button" class="btn btn-light" data-toggle="tooltip" data-placement="top"
+        title="Here you can see the list of finished events and their details. Don't forget to assign your goals and assists.">Finished
+        Events</button>
+      <button id="callapseButton3" type="button" class="btn btn-light" data-toggle="tooltip" data-placement="top"
+        title="Everybody can create an event. You will become an event owner after you create it.">Create Event</button>
     </div>
   </div></br>
 
@@ -42,20 +47,20 @@
           <div class="row">
             <div class="col-6">Team 1:
               <% event.team1.players.forEach(function(player) {%>
-                <% if(event.owner == player._id){ %>
-                  <a href="#" class="badge badge-success"><%=player.username%></a>
-                  <% } else{ %>
-                  <a href="#" class="badge badge-primary"><%=player.username%></a>
-                  <% } %>
+              <% if(event.owner == player._id){ %>
+              <a href="#" class="badge badge-success"><%=player.username%></a>
+              <% } else{ %>
+              <a href="#" class="badge badge-primary"><%=player.username%></a>
+              <% } %>
               <% }); %>
             </div>
             <div class="col-6">Team 2:
               <% event.team2.players.forEach(function(player) {%>
-                <% if(event.owner == player._id){ %>
-                  <a href="#" class="badge badge-success"><%=player.username%></a>
-                  <% } else{ %>
-                  <a href="#" class="badge badge-primary"><%=player.username%></a>
-                  <% } %>
+              <% if(event.owner == player._id){ %>
+              <a href="#" class="badge badge-success"><%=player.username%></a>
+              <% } else{ %>
+              <a href="#" class="badge badge-primary"><%=player.username%></a>
+              <% } %>
               <% }); %>
             </div>
           </div>
@@ -76,8 +81,8 @@
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <% if (loggedUser._id != event.owner && event.status == 'new'){{%>
-                <button id="attendButton" onclick="attendEvent('<%= event._id %>')"
-                  class="btn btn-outline-primary">Attend</button>            
+            <button id="attendButton" onclick="attendEvent('<%= event._id %>')"
+              class="btn btn-outline-primary">Attend</button>
             <% }} %>
             <% if (loggedUser._id == event.owner || admin){{%>
             <% if (event.status == 'new'){{%>
@@ -98,66 +103,66 @@
 
   <div class="row collapse collapseExample2">
     <% var i = 0; finishedEvents.forEach(function(event) { i++; %>
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Event Number:
-            <span><b><%=event.event_id%></b></span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Status:
-            <span><b><%=event.status%></b></span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Result:
-            <% if(event.team1.goals > event.team2.goals){ %>
-              <span><b><%=event.team1.goals%> : </b><%=event.team2.goals%></span>
-            <% } %>
-            <% if(event.team2.goals > event.team1.goals){ %>
-              <span><%=event.team1.goals%> : <b><%=event.team2.goals%></b></span>
-            <% } %>
-            <% if(event.team1.goals == event.team2.goals){ %>
-              <span><%=event.team1.goals%> : <%=event.team2.goals%></span>
-            <% } %>
-          </li>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">Team 1:
-                <% event.team1.players.forEach(function(player) {%>
-                  <% if(event.owner == player._id){ %>
-                    <a href="#" class="badge badge-success"><%=player.username%></a>
-                    <% } else{ %>
-                    <a href="#" class="badge badge-primary"><%=player.username%></a>
-                    <% } %>
-                <% }); %>
-              </div>
-              <div class="col-6">Team 2:
-                <% event.team2.players.forEach(function(player) {%>
-                  <% if(event.owner == player._id){ %>
-                    <a href="#" class="badge badge-success"><%=player.username%></a>
-                    <% } else{ %>
-                    <a href="#" class="badge badge-primary"><%=player.username%></a>
-                    <% } %>
-                <% }); %>
-              </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Event Number:
+          <span><b><%=event.event_id%></b></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Status:
+          <span><b><%=event.status%></b></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Result:
+          <% if(event.team1.goals > event.team2.goals){ %>
+          <span><b><%=event.team1.goals%> : </b><%=event.team2.goals%></span>
+          <% } %>
+          <% if(event.team2.goals > event.team1.goals){ %>
+          <span><%=event.team1.goals%> : <b><%=event.team2.goals%></b></span>
+          <% } %>
+          <% if(event.team1.goals == event.team2.goals){ %>
+          <span><%=event.team1.goals%> : <%=event.team2.goals%></span>
+          <% } %>
+        </li>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">Team 1:
+              <% event.team1.players.forEach(function(player) {%>
+              <% if(event.owner == player._id){ %>
+              <a href="#" class="badge badge-success"><%=player.username%></a>
+              <% } else{ %>
+              <a href="#" class="badge badge-primary"><%=player.username%></a>
+              <% } %>
+              <% }); %>
+            </div>
+            <div class="col-6">Team 2:
+              <% event.team2.players.forEach(function(player) {%>
+              <% if(event.owner == player._id){ %>
+              <a href="#" class="badge badge-success"><%=player.username%></a>
+              <% } else{ %>
+              <a href="#" class="badge badge-primary"><%=player.username%></a>
+              <% } %>
+              <% }); %>
             </div>
           </div>
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Number Of Players
-              <span class="badge badge-primary badge-pill"><%=event.players.length%></span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Place:
-              <span><%=event.place%></span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Date and Time:
-              <span><%=event.date%> <%=event.time%></span>
-            </li>
-          </ul>
         </div>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Place:
+            <span><%=event.place%></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Date and Time:
+            <span><%=event.date%> <%=event.time%></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button id="attendButton" onclick="location.href='/events/finishedEvent/<%=event._id%>';"
+              class="btn btn-outline-primary">Detail</button>
+          </li>
+        </ul>
       </div>
+    </div>
     <% }); %>
   </div>
 

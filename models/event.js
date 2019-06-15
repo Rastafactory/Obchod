@@ -48,42 +48,30 @@ module.exports.getEventById = function (id, callback) {
     var query = {
         _id: id
     };
-    Event.findOne(query, callback);
+    Event.findOne(query).then(function (result) {
+        callback(result)
+    }).catch(function (error) {
+        console.log(error)
+    })
 }
 
 module.exports.finishEvent = function (id, score, callback) {
     var query = {
         _id: id
     };
-    Event.findOneAndUpdate(query, { $set: {'team1.goals': Number(score.team1), 'team2.goals': Number(score.team2)}, "status": "finished"}, { new: true }).then(function (response) {
+    Event.findOneAndUpdate(query, {
+        $set: {
+            'team1.goals': Number(score.team1),
+            'team2.goals': Number(score.team2)
+        },
+        "status": "finished"
+    }, {
+        new: true
+    }).then(function (response) {
         callback(response)
     }).catch(function (error) {
         console.log(error)
     });;
-}
-
-module.exports.getEventByIdAndFetchPlayers = function (id, callback) {
-    var query = {
-        _id: id
-    };
-    Event.findOne(query).then(function (response) {
-        var players = []
-        for (i = 0; i < response.players.length; i++) {
-            players.push(response.players[i]._id)
-        }
-
-        User.find({
-            _id: {
-                $in: players
-            }
-        }).then(function (response) {
-            callback(response)
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }).catch(function (error) {
-        console.log(error)
-    });
 }
 
 module.exports.createEvent = function (newEvent, callback) {
@@ -108,6 +96,25 @@ module.exports.attendOnEvent = function (id, player, callback) {
             'players': player
         }
     }, callback);
+}
+
+
+
+module.exports.assignGoalsAndAssists = function (id, team1, team2, callback) {
+    console.log(team1)
+    console.log(team2)
+    Event.update({
+        _id: id
+    }, {
+        $set: {
+            'team1': team1,
+            'team2': team2
+        }
+    }).then(function (response) {
+        callback()
+    }).catch(function (error) {
+        console.log(error)
+    });
 }
 
 module.exports.getMaxEventId = function (callback) {

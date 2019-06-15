@@ -3,44 +3,42 @@
 <!-- Page Content -->
 <div class="container">
 
-  <!-- Portfolio Item Heading -->
+  <!-- Player Profile Heading -->
   <h1 class="my-4"><%=currentUser.username%>
     <small><%=currentUser.firstname%> <%=currentUser.lastname%></small>
   </h1>
-
-  <!-- Portfolio Item Row -->
   <div class="row">
 
-    <div class="col">
-      <br>
-      <div class="w-75 h-75">
+    <!-- Player Profile info -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
         <img class="rounded img-fluid mx-auto d-block" src="/images/uploads/<%=currentUser.profileimage%>" alt="">
-      </div>
-      <br>
-      <div>
+        <br>
         <button class="btn btn-outline-secondary">Upload Profile Image</button>
       </div>
     </div>
 
-    <div class="col">
-      <h3 class="my-3">Player Description</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna
-        varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu
-        convallis placerat, felis enim.</p>
-      <h3 class="my-3">Player Details</h3>
-      <ul>
-        <li>Games Played: <%=currentUser.summary.gamesplayed%></li>
-        <li>Wins: <%=currentUser.summary.wins%></li>
-        <li>Draws: <%=currentUser.summary.draws%></li>
-        <li>Losses: <%=currentUser.summary.losses%></li>
-        <li>Goals: <%=currentUser.summary.goals%></li>
-        <li>Assists: <%=currentUser.summary.assists%></li>
-        <li>Points: <%=currentUser.summary.points%></li>
+    <div class="col-md-6 mb-4">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Games Played: <b><%=currentUser.summary.gamesplayed%></b></li>
+        <li class="list-group-item">Wins: <b><%=currentUser.summary.wins%></b></li>
+        <li class="list-group-item">Draws: <b><%=currentUser.summary.draws%></b></li>
+        <li class="list-group-item">Losses: <b><%=currentUser.summary.losses%></b></li>
+        <li class="list-group-item">Goals: <b><%=currentUser.summary.goals%></b></li>
+        <li class="list-group-item">Assists: <b><%=currentUser.summary.assists%></b></li>
+        <li class="list-group-item">Points: <b><%=currentUser.summary.points%></b></li>
       </ul>
     </div>
+  </div></br>
 
+  <!-- Player Form -->
+  <h3 class="my-4">Player Form</h3>
+  <div class="progress">
+    <div class="progress-bar bg-success" role="progressbar"
+      style="width: <%=(currentUser.summary.wins/currentUser.summary.gamesplayed)*100%>%"
+      aria-valuenow="<%=(currentUser.summary.wins/currentUser.summary.gamesplayed)*100%>" aria-valuemin="0"
+      aria-valuemax="100"></div>
   </div>
-  <!-- /.row -->
 
   <!-- Related Projects Row -->
   <h3 class="my-4">Last Games Played</h3>
