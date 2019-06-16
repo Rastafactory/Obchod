@@ -20,7 +20,7 @@ router.get('/', function (req, res, next) {
         for (var i = 0; i < events.length; i++) {
             if (events[i].status == 'new' || events[i].status == 'started') {
                 currentEvents.push(events[i]);
-            } else if (events[i].status == 'finished') {
+            } else if (events[i].status == 'finished' || events[i].status == 'closed') {
                 finishedEvents.push(events[i]);
             } else {
                 console.log('another status.')
@@ -34,28 +34,6 @@ router.get('/', function (req, res, next) {
             finishedEvents: finishedEvents
         });
     });
-});
-
-router.post('/assignGoalsAndAssists/:id', function (req, res, next) {
-    var id = req.params.id;
-    var data = req.body;
-    console.log(data);
-
-    Event.getEventById(id, function (event) {
-        var team1 = event.team1;
-        var team2 = event.team2;
-        if (data.team == 'team1') {
-            team1.players[data.playerId].goals = Number(data.goals)
-            team1.players[data.playerId].assists = Number(data.assists)
-        } else if (data.team == 'team2') {
-            team2.players[data.playerId].goals = Number(data.goals)
-            team2.players[data.playerId].assists = Number(data.assists)
-        }
-
-        Event.assignGoalsAndAssists(id, team1, team2, function () {
-            res.send({message: 'Goals and assists have been assigned.'});
-        })
-    })
 });
 
 router.post('/createEvent', function (req, res, next) {
@@ -97,10 +75,52 @@ router.post('/createEvent', function (req, res, next) {
             res.send(event);
         });
     })
-
 });
 
+router.get('/eventDetail/:id', function (req, res, next) {
+    var id = req.params.id;
+    var loggedUser = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage,
+        admin: req.user.admin
+    }
 
+    Event.getEventById(id, function (result) {
+        if (result.status == 'finished' || result.status == 'closed') {
+            var event = result;
+        } else {
+            console.log('another status.')
+        }
+
+        res.render('eventDetail', {
+            event: event,
+            loggedUser: loggedUser
+        });
+    })
+});
+
+router.post('/attendOnEvent/:id', function (req, res, next) {
+
+    var id = req.params.id;
+    var player = {
+        _id: req.user._id,
+        username: req.user.username,
+        profileimage: req.user.profileimage,
+        summary: req.user.summary,
+        goals: 0,
+        assists: 0
+    }
+
+    Event.attendOnEvent(id, player, function (err, event) {
+        if (err) {
+            console.log(err)
+            res.send('Unable to participate on event.');
+        } else {
+            res.send('Well done! You will participate on this event.');
+        }
+    });
+});
 
 router.post('/generateTeams/:id', function (req, res, next) {
     var id = req.params.id;
@@ -116,29 +136,6 @@ router.post('/generateTeams/:id', function (req, res, next) {
                 }
             })
         })
-    })
-});
-
-router.get('/finishedEvent/:id', function (req, res, next) {
-    var id = req.params.id;
-    var loggedUser = {
-        _id: req.user._id,
-        username: req.user.username,
-        profileimage: req.user.profileimage,
-        admin: req.user.admin
-    }
-
-    Event.getEventById(id, function (result) {
-        if (result.status == 'finished') {
-            var event = result;
-        } else {
-            console.log('another status.')
-        }
-
-        res.render('finishedEvent', {
-            event: event,
-            loggedUser: loggedUser
-        });
     })
 });
 
@@ -188,18 +185,38 @@ router.post('/finishEvent/:id', function (req, res, next) {
     })
 });
 
-router.get('/submitGoalsAndAssists/:id', function (req, res, next) {
+router.post('/assignGoalsAndAssists/:id', function (req, res, next) {
     var id = req.params.id;
-    var loggedUser = {
-        _id: req.user._id,
-        username: req.user.username,
-        profileimage: req.user.profileimage,
-        admin: req.user.admin
-    }
-    console.log(id);
+    var data = req.body;
+    console.log(data);
 
     Event.getEventById(id, function (event) {
-        res.send({message: 'Goals and assists have been submitted.'});
+        var team1 = event.team1;
+        var team2 = event.team2;
+        if (data.team == 'team1') {
+            team1.players[data.playerId].goals = Number(data.goals)
+            team1.players[data.playerId].assists = Number(data.assists)
+        } else if (data.team == 'team2') {
+            team2.players[data.playerId].goals = Number(data.goals)
+            team2.players[data.playerId].assists = Number(data.assists)
+        }
+
+        Event.assignGoalsAndAssists(id, team1, team2, function () {
+            res.send({
+                message: 'Goals and assists have been assigned.'
+            });
+        })
+    })
+});
+
+router.get('/submitGoalsAndAssists/:id', function (req, res, next) {
+    var id = req.params.id;
+
+    Event.getEventById(id, function (event) {
+        var players = event.team1.players.concat(event.team2.players)
+        User.submitGoalsAndAssists(id, players, function () {
+            res.send('Goals and assists have been submitted.');
+        })
     })
 });
 
@@ -208,28 +225,6 @@ router.post('/cancelEvent/:id', function (req, res, next) {
 
     Event.cancelEvent(id, function (response) {
         res.send(response);
-    });
-});
-
-router.post('/attendOnEvent/:id', function (req, res, next) {
-
-    var id = req.params.id;
-    var player = {
-        _id: req.user._id,
-        username: req.user.username,
-        profileimage: req.user.profileimage,
-        summary: req.user.summary,
-        goals: 0,
-        assists: 0
-    }
-
-    Event.attendOnEvent(id, player, function (err, event) {
-        if (err) {
-            console.log(err)
-            res.send('Unable to participate on event.');
-        } else {
-            res.send('Well done! You will participate on this event.');
-        }
     });
 });
 

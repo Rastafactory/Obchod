@@ -15,8 +15,6 @@
       team: team
     };
 
-    console.log(data)
-
     $.ajax({
       type: "POST",
       url: "/events/assignGoalsAndAssists/" + eventId,
@@ -24,11 +22,7 @@
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function (data) {
-        $("#alert").empty();
-        $("#alert").append('<div class="alert alert-success" role="alert">'+ data.message +'</div>')
-        $("#alert").hover(function(){
-          $(".alert").show().delay( 5000 ).hide();
-        });
+        $("input").prop('disabled', true)
       },
       error: function (error) {
         console.log(error)
@@ -38,18 +32,12 @@
 
   function submitGoalsAndAssists(eventId) {
 
-    console.log('clicked')
-
     $.ajax({
       type: "GET",
       url: "/events/submitGoalsAndAssists/" + eventId,
       data: eventId,
       success: function (data) {
-        $("#alert").empty();
-        $("#alert").append('<div class="alert alert-success" role="alert">'+ data.message +'</div>')
-        $("#alert").hover(function(){
-          $(".alert").show().delay( 5000 ).hide();
-        });
+        location.reload();
       },
       error: function (error) {
         console.log(error)

@@ -40,10 +40,10 @@
                 <li class="list-group-item"><b>Event owner:</b></li>
             </ul>
         </div>
-        <% if (loggedUser._id == event.owner || loggedUser.admin == true){{%>
+        <% if ((loggedUser._id == event.owner || loggedUser.admin == true) && event.status!=='closed'){{%>
         <div class="col">
-            <button onclick="submitGoalsAndAssists('<%=event._id%>')"
-                class="btn btn-outline-primary">Submit Form</button>
+            <button onclick="submitGoalsAndAssists('<%=event._id%>')" class="btn btn-outline-primary">Submit
+                Form</button>
         </div>
         <% }} %>
     </div></br>
@@ -64,6 +64,16 @@
                 <tbody>
                     <% var i = 0; event.team1.players.forEach(function(player) { i++; %>
                     <tr>
+                        <% if (event.status=='closed'){{%>
+                        <th scope="row"><%=i%></th>
+                        <td><%=player.username%></td>
+                        <td><input disabled type="number" id="goals1_<%=i%>" min=0 value="<%=player.goals%>"
+                                class="form-control"></td>
+                        <td><input disabled type="number" id="assists1_<%=i%>" min=0 value="<%=player.assists%>"
+                                class="form-control"></td>
+                        <td></td>
+                        <% }} %>
+                        <% if (event.status=='finished'){{%>
                         <th scope="row"><%=i%></th>
                         <td><%=player.username%></td>
                         <td><input type="number" id="goals1_<%=i%>" min=0 value="<%=player.goals%>"
@@ -72,6 +82,7 @@
                                 class="form-control"></td>
                         <td><button type="button" onclick="assignGoalsAndAssists('<%=i%>', 'team1', '<%=event._id%>')"
                                 class="btn btn-outline-success btn-sm">Submit</button></td>
+                        <% }} %>
                     </tr>
                     <% }); %>
                 </tbody>
@@ -93,6 +104,16 @@
                 <tbody>
                     <% var i = 0; event.team2.players.forEach(function(player) { i++; %>
                     <tr>
+                        <% if (event.status=='closed'){{%>
+                        <th scope="row"><%=i%></th>
+                        <td><%=player.username%></td>
+                        <td><input type="number" disabled id="goals2_<%=i%>" min=0 value="<%=player.goals%>"
+                                class="form-control"></td>
+                        <td><input type="number" disabled id="assists2_<%=i%>" min=0 value="<%=player.assists%>"
+                                class="form-control"></td>
+                        <td></td>
+                        <% }} %>
+                        <% if (event.status=='finished'){{%>
                         <th scope="row"><%=i%></th>
                         <td><%=player.username%></td>
                         <td><input type="number" id="goals2_<%=i%>" min=0 value="<%=player.goals%>"
@@ -101,6 +122,7 @@
                                 class="form-control"></td>
                         <td><button type="button" onclick="assignGoalsAndAssists('<%=i%>', 'team2', '<%=event._id%>')"
                                 class="btn btn-outline-success btn-sm">Submit</button></td>
+                        <% }} %>
                     </tr>
                     <% }); %>
                 </tbody>
@@ -119,7 +141,7 @@
 <!-- /.container -->
 
 </body>
-<script type="text/javascript" src="/javascripts/finishedEvents.js"></script>
+<script type="text/javascript" src="/javascripts/eventDetail.js"></script>
 
 <!-- Footer -->
 <footer class="page-footer font-small cyan darken-3">

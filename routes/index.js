@@ -11,9 +11,14 @@ router.get('/', function (req, res, next) {
 router.get('/profile/:id', function (req, res, next) {
   var id = req.params.id;
 
+  var canUpload = false;
+  if (id == req.user._id) {
+    canUpload = true
+  }
+
   User.getUserById(id, function (err, currentUser) {
-    console.log(currentUser)
     res.render('profile', {
+      canUpload: canUpload,
       currentUser: currentUser
     });
   })
@@ -26,6 +31,5 @@ router.get('/stats', function (req, res, next) {
     });
   });
 });
-
 
 module.exports = router;

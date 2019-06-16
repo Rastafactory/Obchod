@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
 var config = require('../config.js');
-var User = require('./user.js');
 
 mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: true
 });
 var db = mongoose.connection;
 
-// User Schema
+// Event Schema
 var EventSchema = mongoose.Schema({
     event_id: {
         type: Number,
@@ -44,7 +43,20 @@ var EventSchema = mongoose.Schema({
 
 var Event = module.exports = mongoose.model('Event', EventSchema);
 
-module.exports.getEventById = function (id, callback) {
+module.exports = {
+    getEventById,
+    getAllEvents,
+    getMaxEventId,
+    createEvent,
+    attendOnEvent,
+    generateTeamsInEvent,
+    finishEvent,
+    assignGoalsAndAssists,
+    closeEvent,
+    cancelEvent
+}
+
+function getEventById(id, callback) {
     var query = {
         _id: id
     };
@@ -55,7 +67,7 @@ module.exports.getEventById = function (id, callback) {
     })
 }
 
-module.exports.finishEvent = function (id, score, callback) {
+function finishEvent(id, score, callback) {
     var query = {
         _id: id
     };
@@ -74,11 +86,11 @@ module.exports.finishEvent = function (id, score, callback) {
     });;
 }
 
-module.exports.createEvent = function (newEvent, callback) {
+function createEvent(newEvent, callback) {
     newEvent.save(callback);
 }
 
-module.exports.getAllEvents = function (callback) {
+function getAllEvents(callback) {
     Event.find().sort({
         event_id: -1
     }).then(function (response) {
@@ -88,21 +100,31 @@ module.exports.getAllEvents = function (callback) {
     });
 }
 
-module.exports.attendOnEvent = function (id, player, callback) {
-    Event.update({
-        _id: id
+function attendOnEvent(id, player, callback) {
+
+    Event.findOneAndUpdate({
+        _id: id,
+        "players._id": player._id
     }, {
-        $addToSet: {
-            'players': player
+        $set: {
+            "players.$": player
         }
-    }, callback);
+    }, function () {
+        Event.findOneAndUpdate({
+            _id: id
+        }, {
+            $addToSet: {
+                'players': player
+            }
+        }, callback)
+    }).then(function (response) {
+        console.log(response)
+    }).catch(function () {
+        console.log(error)
+    })
 }
 
-
-
-module.exports.assignGoalsAndAssists = function (id, team1, team2, callback) {
-    console.log(team1)
-    console.log(team2)
+function assignGoalsAndAssists(id, team1, team2, callback) {
     Event.update({
         _id: id
     }, {
@@ -117,7 +139,7 @@ module.exports.assignGoalsAndAssists = function (id, team1, team2, callback) {
     });
 }
 
-module.exports.getMaxEventId = function (callback) {
+function getMaxEventId(callback) {
     Event.find().sort({
         event_id: -1
     }).limit(1).then(function (response) {
@@ -127,7 +149,7 @@ module.exports.getMaxEventId = function (callback) {
     });
 }
 
-module.exports.generateTeamsInEvent = function (id, team1, team2, callback) {
+function generateTeamsInEvent(id, team1, team2, callback) {
     var query = {
         _id: id
     };
@@ -139,7 +161,22 @@ module.exports.generateTeamsInEvent = function (id, team1, team2, callback) {
     Event.update(query, update, callback);
 }
 
-module.exports.cancelEvent = function (id, callback) {
+function closeEvent(id, callback) {
+    var query = {
+        _id: id
+    };
+    Event.findOneAndUpdate(query, {
+        "status": "closed"
+    }, {
+        new: true
+    }).then(function (response) {
+        callback(response)
+    }).catch(function (error) {
+        console.log(error)
+    });;
+}
+
+function cancelEvent(id, callback) {
     Event.remove({
         _id: id
     }).then(function (response) {
