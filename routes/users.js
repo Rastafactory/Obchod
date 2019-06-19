@@ -103,7 +103,9 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
                 goals: 0,
                 assists: 0,
                 points: 0
-            }
+            },
+            resetPasswordToken: null,
+            resetPasswordExpires: null
         });
 
         User.createUser(newUser, function (result) {

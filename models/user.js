@@ -6,8 +6,7 @@ var Event = require('./event');
 mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: true
 });
-
-var db = mongoose.connection;
+mongoose.set('useCreateIndex', true)
 
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -39,24 +38,14 @@ var UserSchema = mongoose.Schema({
     },
     summary: {
         type: Object
-    }
-
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
 
-module.exports = {
-    getAllUsers,
-    getUserById,
-    getUserByUsername,
-    uploadUserPhoto,
-    submitGoalsAndAssists,
-    userFinishedEvent,
-    comparePassword,
-    createUser
-}
-
-function getAllUsers(callback) {
+module.exports.getAllUsers = function(callback) {
     User.find({}, {
         firstname: 1,
         lastname: 1,
@@ -67,18 +56,25 @@ function getAllUsers(callback) {
     }, callback)
 }
 
-function getUserById(id, callback) {
+module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
-function getUserByUsername(username, callback) {
+module.exports.getUserByUsername = function(username, callback) {
     var query = {
         username: username
     };
     User.findOne(query, callback);
 }
 
-function uploadUserPhoto(id, profileimage, callback) {
+module.exports.getUserByEmail = function(email, callback) {
+    var query = {
+        email: email
+    };
+    User.findOne(query, callback);
+}
+
+module.exports.uploadUserPhoto = function(id, profileimage, callback) {
     User.updateOne({
         _id: id
     }, {
@@ -92,7 +88,7 @@ function uploadUserPhoto(id, profileimage, callback) {
     })
 }
 
-function submitGoalsAndAssists(eventId, players, callback) {
+module.exports.submitGoalsAndAssists = function(eventId, players, callback) {
     var bulk = User.collection.initializeUnorderedBulkOp();
 
     for (i = 0; i < players.length; i++) {
@@ -115,7 +111,7 @@ function submitGoalsAndAssists(eventId, players, callback) {
     });
 }
 
-function userFinishedEvent(team1, team2, result, callback) {
+module.exports.userFinishedEvent = function(team1, team2, result, callback) {
     if (result == 'draw') {
         var allPlayers = team1.concat(team2);
         console.log(allPlayers)
@@ -198,13 +194,13 @@ function userFinishedEvent(team1, team2, result, callback) {
     }
 }
 
-function comparePassword(candidatePassword, hash, callback) {
+module.exports.comparePassword = function(candidatePassword, hash, callback) {
     bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
         callback(null, isMatch);
     });
 }
 
-function createUser(newUser, callback) {
+module.exports.createUser = function(newUser, callback) {
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(newUser.password, salt, function (err, hash) {
             newUser.password = hash;
@@ -214,6 +210,39 @@ function createUser(newUser, callback) {
                 console.log(error)
                 callback('bad')
             });;
+        });
+    })
+}
+
+module.exports.saveUpdatedUser = function(user, callback) {
+    user.save().then(function (err) {
+        console.log(err)
+        callback(err)
+    }).catch(function (error) {
+        console.log(error)
+    });
+}
+
+module.exports.findUserByToken = function(resetPasswordToken, resetPasswordExpires, callback) {
+    var query = {
+        resetPasswordToken: resetPasswordToken,
+        resetPasswordExpires: {
+            $gt: resetPasswordExpires
+        }
+    };
+    User.findOne(query, callback);
+}
+
+module.exports.saveUpdatedUserPassword = function(user, callback) {
+    bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            user.password = hash;
+            user.save().then(function (err) {
+                console.log(err)
+                callback(err)
+            }).catch(function (error) {
+                console.log(error)
+            });
         });
     })
 }

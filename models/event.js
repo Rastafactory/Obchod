@@ -4,7 +4,7 @@ var config = require('../config.js');
 mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: true
 });
-var db = mongoose.connection;
+mongoose.set('useCreateIndex', true)
 
 // Event Schema
 var EventSchema = mongoose.Schema({
@@ -43,20 +43,7 @@ var EventSchema = mongoose.Schema({
 
 var Event = module.exports = mongoose.model('Event', EventSchema);
 
-module.exports = {
-    getEventById,
-    getAllEvents,
-    getMaxEventId,
-    createEvent,
-    attendOnEvent,
-    generateTeamsInEvent,
-    finishEvent,
-    assignGoalsAndAssists,
-    closeEvent,
-    cancelEvent
-}
-
-function getEventById(id, callback) {
+module.exports.getEventById = function(id, callback) {
     var query = {
         _id: id
     };
@@ -67,7 +54,7 @@ function getEventById(id, callback) {
     })
 }
 
-function finishEvent(id, score, callback) {
+module.exports.finishEvent = function(id, score, callback) {
     var query = {
         _id: id
     };
@@ -86,11 +73,11 @@ function finishEvent(id, score, callback) {
     });;
 }
 
-function createEvent(newEvent, callback) {
+module.exports.createEvent = function(newEvent, callback) {
     newEvent.save(callback);
 }
 
-function getAllEvents(callback) {
+module.exports.getAllEvents = function(callback) {
     Event.find().sort({
         event_id: -1
     }).then(function (response) {
@@ -100,7 +87,7 @@ function getAllEvents(callback) {
     });
 }
 
-function attendOnEvent(id, player, callback) {
+module.exports.attendOnEvent = function(id, player, callback) {
 
     Event.findOneAndUpdate({
         _id: id,
@@ -124,7 +111,7 @@ function attendOnEvent(id, player, callback) {
     })
 }
 
-function assignGoalsAndAssists(id, team1, team2, callback) {
+module.exports.assignGoalsAndAssists = function (id, team1, team2, callback) {
     Event.update({
         _id: id
     }, {
@@ -139,7 +126,7 @@ function assignGoalsAndAssists(id, team1, team2, callback) {
     });
 }
 
-function getMaxEventId(callback) {
+module.exports.getMaxEventId = function (callback) {
     Event.find().sort({
         event_id: -1
     }).limit(1).then(function (response) {
@@ -149,7 +136,7 @@ function getMaxEventId(callback) {
     });
 }
 
-function generateTeamsInEvent(id, team1, team2, callback) {
+module.exports.generateTeamsInEvent = function(id, team1, team2, callback) {
     var query = {
         _id: id
     };
@@ -161,7 +148,7 @@ function generateTeamsInEvent(id, team1, team2, callback) {
     Event.update(query, update, callback);
 }
 
-function closeEvent(id, callback) {
+module.exports.closeEvent = function(id, callback) {
     var query = {
         _id: id
     };
@@ -176,7 +163,7 @@ function closeEvent(id, callback) {
     });;
 }
 
-function cancelEvent(id, callback) {
+module.exports.cancelEvent = function(id, callback) {
     Event.remove({
         _id: id
     }).then(function (response) {
