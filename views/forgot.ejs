@@ -1,0 +1,25 @@
+<% include ./header.ejs %>
+
+<div class="container"><br>
+    <h1>Forget password</h1><br>
+
+    <form method="POST" action="/forgot">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input type="email" required class="form-control" name="email" placeholder="Email">
+          </div>
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  </body>
+
+  </html>

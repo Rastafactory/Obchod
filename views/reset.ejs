@@ -1,0 +1,35 @@
+<% include ./header.ejs %>
+
+  <div class="container"><br>
+    <h1>Reset Password</h1><br>
+    <% if (typeof errors !== 'undefined'){errors.forEach(function(error){%>
+        <div class="alert alert-danger">
+            <%= error.msg %>
+        </div>
+    <% })} %>
+
+    <form method="post" action="/reset/<%= user.resetPasswordToken %>" autocomplete="on">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormInputGroupUsername">New Password</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input type="password" name="password" value="" class="form-control" placeholder="eg. X8df!90EO">
+          </div>
+        </div>
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormInputName">Confirm Password</label>
+          <input type="password" name="password2" value="" placeholder="Confirm password" class="form-control">
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  </body>
+
+  </html>
