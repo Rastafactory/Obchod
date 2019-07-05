@@ -2,7 +2,7 @@ module.exports = {
   paypal: {
       businessEmail: '',
       url: 'https://www.sandbox.paypal.com/cgi-bin/webscr',
-      currency: 'USD'
+      currency: 'EUR'
   },
   secret: 'nanana',
   name: 'nodeStore',
@@ -11,7 +11,7 @@ module.exports = {
       sessions: 'sessions'
   },
   locale: {
-      lang: 'en-US',
-      currency: 'USD'
+      lang: 'en-SK',
+      currency: 'EUR'
   }
 };
