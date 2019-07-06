@@ -95,15 +95,6 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
             password: password,
             profileimage: profileimage,
             admin: false,
-            summary: {
-                gamesplayed: 0,
-                wins: 0,
-                draws: 0,
-                losses: 0,
-                goals: 0,
-                assists: 0,
-                points: 0
-            },
             resetPasswordToken: null,
             resetPasswordExpires: null
         });
@@ -125,27 +116,9 @@ router.post('/register', upload.single('profileimage'), function (req, res, next
     }
 });
 
-router.post('/uploadPhoto', upload.single('profileimage'), function (req, res, next) {
-    var userId = req.user._id;
-  
-    if (req.file) {
-      console.log('Uploading File...');
-      var profileimage = req.file.filename;
-    } else {
-      console.log('No File Uploaded...');
-      var profileimage = 'noimage.jpg';
-    }
-  
-    User.uploadUserPhoto(userId, profileimage, function (result) {
-      console.log(result);
-      res.redirect('back');
-    });
-  });
-
-router.get('/logout', function (req, res) {
+router.get('/logout', function(req, res){
     req.logout();
-    req.flash('success', 'You are now logged out');
-    res.redirect('/users/login');
+    res.redirect('/');
 });
 
 module.exports = router;

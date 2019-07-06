@@ -5,12 +5,22 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local');
+var MongoDBStore = require('connect-mongodb-session')(session);
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var debug = require('debug')('projekt:server');
 var http = require('http');
 var app = express();
+var config = require('./config.js');
+const Security = require('./lib/Security');
+
+var store = new MongoDBStore({
+    uri: config.db.url,
+    collection: config.db.sessions
+});
+
+app.locals.paypal = config.paypal;
+app.locals.locale = config.locale;
 
 // Get port from environment and store in Express.
 
@@ -25,7 +35,10 @@ console.log('App is running on port: ' + port);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var events = require('./routes/events');
+var products = require('./routes/products');
+var checkout = require('./routes/checkout');
+var cart = require('./routes/cart');
+var password = require('./routes/password');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,9 +56,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle Sessions
 app.use(session({
-  secret: 'sectret',
+  secret: config.secret,
+  resave: false,
   saveUninitialized: true,
-  resave: true
+  unset: 'destroy',
+  store: store,
+  name: config.name + '-' + Security.generateId(),
+  genid: (req) => {
+      return Security.generateId()
+  }
 }));
 
 // Passport
@@ -81,7 +100,22 @@ app.get('*', function (req, res, next) {
   next();
 });
 
-app.get(['/profile', '/profile/*', '/events', '/events/*', '/stats'], function (req, res, next) {
+app.use(['*', '/products/*', '/checkout', '/cart'], function(req, res, next){
+  if(!req.session.cart) {
+    req.session.cart = {
+        items: [],
+        totals: 0.00,
+        formattedTotals: ''
+    };
+  }
+
+  res.locals.user = req.user || null;
+  res.locals.cart = req.session.cart || null;
+  res.locals.nonce = Security.md5(req.sessionID + req.headers['user-agent']);
+  next();
+});
+
+app.get(['/admin', '/admin/*'], function (req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -90,7 +124,9 @@ app.get(['/profile', '/profile/*', '/events', '/events/*', '/stats'], function (
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/events', events);
+app.use('/products', products);
+app.use('/checkout', checkout);
+app.use('/cart', cart);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

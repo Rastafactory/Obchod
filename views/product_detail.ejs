@@ -1,0 +1,64 @@
+<% include header%>
+
+    <!-- ##### Single Product Details Area Start ##### -->
+    <section class="single_product_details_area d-flex align-items-center">
+
+        <!-- Single Product Thumb -->
+        <div class="single_product_thumb clearfix">
+            <div class="product_thumbnail_slides owl-carousel">
+                <% for (var i=0; i<product.img.length;i++) { %>
+                <img src="/uploads/<%=product.img[i]%>" alt="">
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Single Product Description -->
+        <div class="single_product_desc clearfix">
+            <span>mango</span>
+            <a>
+                <h2><%=product.productname%></h2>
+            </a>
+            <p class="product-price"><span class="old-price">$65.00</span> <%= product.formattedPrice %></p>
+            <p class="product-desc"><%= product.description %></p>
+
+            <!-- Form -->
+            <form action="/cart" method="post" class="cart-form clearfix">
+                <!-- Select Box -->
+                <div class="select-box d-flex mt-50 mb-30">
+                    <select name="select" id="productSize" class="mr-5">
+                        <option value="value">Size: XL</option>
+                        <option value="value">Size: X</option>
+                        <option value="value">Size: M</option>
+                        <option value="value">Size: S</option>
+                    </select>
+                    <select name="select" id="productColor">
+                        <option value="value">Color: Black</option>
+                        <option value="value">Color: White</option>
+                        <option value="value">Color: Red</option>
+                        <option value="value">Color: Purple</option>
+                    </select>
+                </div>
+                <!-- Cart & Favourite Box -->
+                <div class="cart-fav-box d-flex align-items-center">
+                    <!-- Cart -->
+                    
+                    <input type="hidden" name="product_id" value="<%= product.product_id %>">
+                    <input type="hidden" name="nonce" value="<%= nonce %>">
+                    <span class="qty-wrap">
+                        <span class="qty-minus"><i class="fa fa-minus"></i></span>
+                        <input type="text" name="qty" class="qty" value="1">
+                        <span class="qty-plus"><i class="fa fa-plus"></i></span>
+                    </span>
+                    <!-- Favourite -->
+                    
+                    <button type="submit" class="btn essence-btn">Add to cart</button>
+                    <div class="product-favourite ml-4">
+                        <a href="#" class="favme fa fa-heart"></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- ##### Single Product Details Area End ##### -->
+
+<% include footer%>

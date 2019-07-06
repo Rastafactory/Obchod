@@ -1,0 +1,41 @@
+:focus {
+    outline-style: none;
+}
+
+.qty {
+    width: 4em;
+    border: none;
+    margin: 0 2em;
+    height: 100%;
+    line-height: 4;
+    text-align: center;
+}
+
+.qty-wrap {
+    display: inline-block;
+    margin: 0 0.5em;
+    position: relative;
+    height: 4em;
+    width: 12em;
+    background-color: rgb(255,255,255);
+    text-align: center;
+}
+
+.qty-minus,
+.qty-plus {
+    width: 4em;
+    height: 100%;
+    line-height: 4;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+}
+
+.qty-minus {
+    left: 0;
+}
+
+.qty-plus {
+    right: 0;
+}

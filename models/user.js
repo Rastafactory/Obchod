@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var config = require('../config.js');
-var Event = require('./event');
 
 mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: true
@@ -30,14 +29,8 @@ var UserSchema = mongoose.Schema({
         unique: true,
         required: true
     },
-    profileimage: {
-        type: String
-    },
     admin: {
         type: Boolean
-    },
-    summary: {
-        type: Object
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date
@@ -45,26 +38,29 @@ var UserSchema = mongoose.Schema({
 
 var User = module.exports = mongoose.model('User', UserSchema);
 
-module.exports.getAllUsers = function(callback) {
-    User.find({}, {
-        firstname: 1,
-        lastname: 1,
-        email: 1,
-        username: 1,
-        profileimage: 1,
-        summary: 1
-    }, callback)
-}
-
-module.exports.getUserById = function(id, callback) {
+module.exports.getUserById = function(id, callback){
     User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(username, callback) {
-    var query = {
-        username: username
-    };
+
+module.exports.getUserByUsername = function(username, callback){
+    var query = {username: username};
     User.findOne(query, callback);
+}
+
+module.exports.comparePassword = function(candidatePassword, hash, callback){
+    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+        callback(null, isMatch);
+    });
+}
+
+module.exports.createUser = function(newUser, callback){
+        bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newUser.password, salt, function(err, hash) {
+            newUser.password = hash;
+            newUser.save(callback);
+    });
+})
 }
 
 module.exports.getUserByEmail = function(email, callback) {
@@ -72,146 +68,6 @@ module.exports.getUserByEmail = function(email, callback) {
         email: email
     };
     User.findOne(query, callback);
-}
-
-module.exports.uploadUserPhoto = function(id, profileimage, callback) {
-    User.updateOne({
-        _id: id
-    }, {
-        $set: {
-            profileimage: profileimage
-        }
-    }).then(function (result) {
-        callback(result)
-    }).catch(function (error) {
-        console.log(error)
-    })
-}
-
-module.exports.submitGoalsAndAssists = function(eventId, players, callback) {
-    var bulk = User.collection.initializeUnorderedBulkOp();
-
-    for (i = 0; i < players.length; i++) {
-        bulk.find({
-            _id: players[i]._id
-        }).update({
-            $inc: {
-                "summary.goals": players[i].goals,
-                "summary.assists": players[i].assists
-            }
-        });
-    }
-    bulk.execute().then(function (result) {
-        console.log(result)
-        Event.closeEvent(eventId, function () {
-            callback()
-        })
-    }).catch(function (error) {
-        console.log(error)
-    });
-}
-
-module.exports.userFinishedEvent = function(team1, team2, result, callback) {
-    if (result == 'draw') {
-        var allPlayers = team1.concat(team2);
-        console.log(allPlayers)
-        var query = {
-            _id: {
-                $in: allPlayers
-            }
-        };
-
-        User.updateMany(query, {
-            $inc: {
-                "summary.gamesplayed": 1,
-                "summary.draws": 1
-            }
-        }).then(function (data) {
-            callback(data)
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-
-    if (result == 'firstTeamWon') {
-        User.updateMany({
-            _id: {
-                $in: team1
-            }
-        }, {
-            $inc: {
-                "summary.gamesplayed": 1,
-                "summary.wins": 1
-            }
-        }).then(function () {
-            User.updateMany({
-                _id: {
-                    $in: team2
-                }
-            }, {
-                $inc: {
-                    "summary.gamesplayed": 1,
-                    "summary.losses": 1
-                }
-            }).then(function (data) {
-                callback(data)
-            }).catch(function (error) {
-                console.log(error)
-            });
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-
-    if (result == 'secondTeamWon') {
-        User.updateMany({
-            _id: {
-                $in: team2
-            }
-        }, {
-            $inc: {
-                "summary.gamesplayed": 1,
-                "summary.wins": 1
-            }
-        }).then(function () {
-            User.updateMany({
-                _id: {
-                    $in: team1
-                }
-            }, {
-                $inc: {
-                    "summary.gamesplayed": 1,
-                    "summary.losses": 1
-                }
-            }).then(function (data) {
-                callback(data)
-            }).catch(function (error) {
-                console.log(error)
-            });
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-}
-
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-    bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
-        callback(null, isMatch);
-    });
-}
-
-module.exports.createUser = function(newUser, callback) {
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(newUser.password, salt, function (err, hash) {
-            newUser.password = hash;
-            newUser.save().then(function (result) {
-                callback('good')
-            }).catch(function (error) {
-                console.log(error)
-                callback('bad')
-            });;
-        });
-    })
 }
 
 module.exports.saveUpdatedUser = function(user, callback) {

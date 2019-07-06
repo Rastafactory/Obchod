@@ -1,3 +1,18 @@
 module.exports = {
-    mongoDBConnectionString: 'mongodb://footballFactoryAdmin:footballFactoryAdm123@ds231537.mlab.com:31537/footballfactory'
-}
+    paypal: {
+        businessEmail: '',
+        url: 'https://www.sandbox.paypal.com/cgi-bin/webscr',
+        currency: 'EUR'
+    },
+    secret: 'nanana',
+    name: 'nodeStore',
+    db: {
+        url: 'mongodb://admin:Admin567@ds125723.mlab.com:25723/shopin',
+        sessions: 'sessions'
+    },
+    locale: {
+        lang: 'en-SK',
+        currency: 'EUR'
+    },
+    mongoDBConnectionString: 'mongodb://admin:Admin567@ds125723.mlab.com:25723/shopin'
+  };

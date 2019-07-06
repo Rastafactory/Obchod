@@ -1,5 +1,5 @@
 {
-  "name": "footballfactory",
+  "name": "eshop-template",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^2.2.0",
     "cookie-parser": "^1.4.4",
     "date-and-time": "^0.7.0",
     "debug": "^2.6.9",

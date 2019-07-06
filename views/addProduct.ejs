@@ -1,0 +1,91 @@
+<% include header%>
+    
+    <div class="checkout_area section-padding-80">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12 col-md-3">
+                    <div class="checkout_details_area mt-50 clearfix">
+
+                        <div class="cart-page-heading mb-30">
+                            <h5>Add Product</h5>
+                        </div>
+                        
+						<form method="post" enctype="multipart/form-data" action="/products/addProduct">
+                                    <fieldset>
+                                        <div class="form-group">
+                                                <label> Product Name</label>
+                                                <input id="productname" class="form-control" name="productname" required="required" type="text" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Availability</label>
+                                                <input id="availability" class="form-control" name="availability" type="number" value="0" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Manufacturer</label>
+                                                <input id="manufacturer" class="form-control" name="manufacturer" type="text" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Category</label>
+                                                <input id="category" class="form-control" name="category" type="text" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Subcategory</label>
+                                                <input id="subcategory" class="form-control" name="subcategory" type="text" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Description</label>
+                                                <textarea id="description" class="form-control" name="description" rows="10" cols="30"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Price</label>
+                                                <input id="price" class="form-control" name="price" type="text" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label> Image</label>
+                                                <input id="img" class="form-control" name="img" type="file" multiple/>
+                                            </div>
+                                        <hr>
+                                        <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Add new Product"></div>
+                                    </fieldset>
+                                </form>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-9">
+                    <div class="checkout_details_area mt-50 clearfix">
+
+                        <div class="cart-page-heading mb-30">
+                            <h5>Products Database</h5>
+                        </div>
+                        
+                        <table>
+                        <thead>
+                            <tr>
+								<th>Product Name</th><th>Product Code</th><th>Price</th><th>Availability</th><th>Manufacturer</th><th>Category</th><th>Subcategory</th><th></th>
+							</tr>
+						</thead>
+						<tbody>
+								<% for (var i=0; i<products.length;i++) { %>
+                                    <form method="post" enctype="multipart/form-data" action="/products/deleteProduct/<%=products[i].id%>">
+                                    <tr>
+                                        <td><%=products[i].productname%></td>
+                                        <td><%=products[i].product_id%></td>
+                                        <td><%=products[i].price%></td>
+                                        <td><%=products[i].availability%></td>
+                                        <td><%=products[i].manufacturer%></td>
+                                        <td><%=products[i].category%></td>
+                                        <td><%=products[i].subcategory%></td>
+                                        <td><div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Delete"></div></td>
+                                    </tr>
+                                    </form>
+                                   <% } %>
+						</tbody>
+					</table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% include footer%>

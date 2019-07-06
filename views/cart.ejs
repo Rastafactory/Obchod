@@ -1,0 +1,108 @@
+<% include header%>
+
+    <section class="new_arrivals_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading text-center">
+                        <h2>Your Cart</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="span12">
+                        <% if(cart && cart.items.length > 0) { %>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Remove</th>
+									<th>Image</th>
+									<th>Product Name</th>
+									<th>Quantity</th>
+									<th>Unit Price</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+							<tbody>
+                                <% cart.items.forEach(function(product) { %>
+                                    <tr>
+                                        <td>
+                                            <a href="/cart/remove/<%= product.id%>/<%= nonce %>" class="btn essence-btn">Remove</a>
+                                        </td>
+                                        <td><a href="/products/product_detail/<%=product._id%>"><img alt="" src="/uploads/<%=product.img%>"></a></td>
+                                        <td><%= product.productname %></td>
+                                        <td><%= product.qty %></td>
+                                        <!--<td><input type="text" class="qty" name="qty[]" value="<%= product.qty %>"></td>
+                                        <td><a href="/cart/update" class="btn essence-btn">Update cart</a></td>-->
+                                        <td><%= product.formattedPrice %></td>
+                                        <td><%= product.subtotal %></td>
+                                        <input type="hidden" name="product_id[]" value="<%= product.id%>">
+                                    </tr>
+                                <% }); %>
+							</tbody>
+						</table>
+                        
+                        <% } else { %>
+                                <p class="alert alert-info">Sorry, no products in your cart.</p>
+                                <% } %>
+                        
+						<!--<h4>What would you like to do next?</h4>
+						<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+							Use Coupon Code
+						</label>
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							Estimate Shipping &amp; Taxes
+						</label>-->
+						<hr>
+						<p class="cart-total right">
+							<strong>Sub-Total</strong>:	<%= cart.formattedTotals %><br>
+							<strong>Eco Tax (-2.00)</strong>: $2.00<br>
+							<strong>VAT (17.5%)</strong>: $17.50<br>
+							<strong>Total</strong>: $119.50<br>
+						</p>
+						<hr/>
+						<p class="buttons center">
+                            <input type="hidden" name="nonce" value="<%= nonce %>">
+                            <a href="/cart/empty/<%= nonce %>" class="btn essence-btn">Empty cart</a>
+                            <a href="/checkout" class="btn essence-btn">Checkout</a>
+						</p>					
+					</div>
+        </div>
+    </section>
+    <!-- ##### New Arrivals Area End ##### -->
+
+    <!-- ##### Brands Area Start ##### -->
+    <div class="brands-area d-flex align-items-center justify-content-between">
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand1.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand2.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand3.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand4.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand5.png" alt="">
+        </div>
+        <!-- Brand Logo -->
+        <div class="single-brands-logo">
+            <img src="/products/img/core-img/brand6.png" alt="">
+        </div>
+    </div>
+    <!-- ##### Brands Area End ##### -->
+
+<% include footer%>
